@@ -1,0 +1,20 @@
+{
+  "name": "Colector Campo C1 - Legado Sustentavel",
+  "short_name": "Colector C1",
+  "description": "Colector de campo offline para muestreo geotecnico. FAPESP 2026/26432-4 Poli-USP/PMI.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1f5f9",
+  "theme_color": "#0f172a",
+  "lang": "es",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230f172a'/><text x='50' y='68' text-anchor='middle' font-size='48' font-family='system-ui' font-weight='900' fill='white'>C1</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
