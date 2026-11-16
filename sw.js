@@ -7,7 +7,7 @@
  */
 const CACHE_NAME = "colector-c1-v3";
 const ASSETS = [
-  "./index.html",
+  "./colector.html",
   "./manifest.json",
   "./jsQR.min.js",
   "./icon-192.png",

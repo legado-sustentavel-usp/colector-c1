@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Colector Campo &amp; Custodia C1 · FAPESP 2026/26432-4</title>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --line: #cbd5e1;
+    --primary: #1d4ed8;
+    --primary-light: #dbeafe;
+    --primary-ink: #ffffff;
+    --ok: #15803d;
+    --ok-light: #dcfce7;
+    --warn: #b45309;
+    --warn-light: #fef3c7;
+    --err: #b91c1c;
+    --dark: #0f172a;
+    --accent: #2563eb;
+    --shadow-sm: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+    --shadow-md: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
+    --radius: 12px;
+    --transition: 0.2s ease;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.4; padding-bottom: 0;
+  }
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 30;
+    border-bottom: 3px solid var(--accent);
+    box-shadow: 0 2px 12px rgba(15,23,42,0.3);
+  }
+  .hdr-brand { display: flex; align-items: center; gap: 12px; }
+  .hdr-logo {
+    width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25);
+    object-fit: cover; flex-shrink: 0; background: #fff;
+  }
+  header h1 { margin: 0; font-size: 1rem; letter-spacing: 0.3px; font-weight: 800; }
+  .subhead { font-size: 0.72rem; color: #94a3b8; display: flex; justify-content: space-between; gap: 8px; margin-top: 2px; flex-wrap: wrap; letter-spacing: 0.2px; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3px; }
+  .pill-ok { background: #dcfce7; color: #166534; }
+  .pill-warn { background: #fef3c7; color: #92400e; }
+  .pill-err { background: #fee2e2; color: #991b1b; }
+  .pill-dark { background: #334155; color: #f8fafc; }
+
+  nav.tabs {
+    display: grid; grid-template-columns: repeat(4, 1fr); background: #e2e8f0;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 68px; z-index: 25;
+    box-shadow: 0 2px 6px rgba(15,23,42,0.06);
+  }
+  nav.tabs button {
+    border: none; background: transparent; padding: 12px 4px; font-weight: 700; font-size: 0.78rem;
+    color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer;
+    transition: all var(--transition);
+  }
+  nav.tabs button:hover { background: rgba(29,78,216,0.04); }
+  nav.tabs button.active { background: #fff; color: var(--primary); border-bottom-color: var(--primary); }
+
+  main { max-width: 760px; margin: 0 auto; padding: 12px; }
+  section.tab-panel { display: none; animation: fadeIn 0.25s ease; }
+  section.tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card h2 {
+    margin: 0 0 10px 0; font-size: 0.92rem; color: var(--dark);
+    border-bottom: 2px solid var(--accent); padding-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  label { display: block; font-size: 0.8rem; font-weight: 700; color: #334155; margin: 8px 0 3px; }
+  input, select, textarea {
+    width: 100%; padding: 10px; border: 1.5px solid #94a3b8; border-radius: 8px;
+    font-size: 0.95rem; background: #fff; color: var(--ink); font-family: inherit;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29,78,216,0.12);
+  }
+  textarea { min-height: 62px; resize: vertical; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  @media (max-width: 460px) { .row3 { grid-template-columns: 1fr 1fr; } }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; padding: 12px 14px; border: none; border-radius: 10px;
+    font-size: 0.93rem; font-weight: 700; cursor: pointer; margin-top: 8px;
+    transition: all var(--transition); position: relative; overflow: hidden;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: linear-gradient(135deg, #1d4ed8, #2563eb); color: var(--primary-ink); box-shadow: 0 2px 8px rgba(29,78,216,0.3); }
+  .btn-primary:hover { box-shadow: 0 4px 14px rgba(29,78,216,0.4); }
+  .btn-dark { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; box-shadow: 0 2px 8px rgba(15,23,42,0.25); }
+  .btn-dark:hover { box-shadow: 0 4px 14px rgba(15,23,42,0.35); }
+  .btn-ok { background: linear-gradient(135deg, #15803d, #16a34a); color: #fff; box-shadow: 0 2px 8px rgba(21,128,61,0.3); }
+  .btn-ok:hover { box-shadow: 0 4px 14px rgba(21,128,61,0.4); }
+  .btn-warn { background: linear-gradient(135deg, #b45309, #d97706); color: #fff; }
+  .btn-err { background: linear-gradient(135deg, #991b1b, #dc2626); color: #fff; }
+  .btn-outline { background: #f8fafc; color: var(--ink); border: 1.5px solid #94a3b8; }
+  .btn-outline:hover { background: #e2e8f0; border-color: #64748b; }
+  .btn-sm { padding: 7px 10px; font-size: 0.82rem; margin-top: 4px; width: auto; }
+
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+  .seg button {
+    padding: 10px 6px; border: 1.5px solid #94a3b8; border-radius: 10px; background: #f8fafc;
+    font-weight: 700; font-size: 0.86rem; cursor: pointer; color: var(--ink);
+    transition: all var(--transition);
+  }
+  .seg button:hover { background: #e2e8f0; }
+  .seg button.active { background: var(--primary-light); border-color: var(--primary); color: #1e3a8a; box-shadow: 0 0 0 1px var(--primary); }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .chip {
+    padding: 8px 12px; border: 1.5px solid #94a3b8; border-radius: 999px; background: #f8fafc;
+    font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all var(--transition);
+  }
+  .chip:hover { background: #e2e8f0; }
+  .chip.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 2px 6px rgba(15,23,42,0.2); }
+
+  #qr-scanner-box {
+    display: none; margin-top: 8px; border: 2px solid var(--primary); border-radius: var(--radius); overflow: hidden; background: #000;
+    box-shadow: 0 4px 16px rgba(29,78,216,0.2);
+  }
+  #qr-video { width: 100%; max-height: 260px; object-fit: cover; display: block; }
+
+  .photo-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-top: 8px; }
+  .photo-item {
+    border: 1px solid var(--line); border-radius: 10px; padding: 5px; background: #f8fafc;
+    font-size: 0.72rem; transition: box-shadow var(--transition);
+  }
+  .photo-item:hover { box-shadow: var(--shadow-md); }
+  .photo-item img { width: 100%; height: 90px; object-fit: cover; border-radius: 7px; display: block; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; word-break: break-all; }
+
+  .record-card {
+    border: 1.5px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+    background: #fff; box-shadow: var(--shadow-sm); transition: box-shadow var(--transition);
+  }
+  .record-card:hover { box-shadow: var(--shadow-md); }
+  .record-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .record-meta { font-size: 0.78rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .actions-inline { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(0);
+    background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; padding: 12px 20px; border-radius: 12px;
+    font-weight: 700; font-size: 0.84rem; z-index: 99; display: none; max-width: 90vw; text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  footer.institutional {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #94a3b8; padding: 16px; text-align: center; font-size: 0.72rem; line-height: 1.6;
+    border-top: 2px solid var(--accent);
+  }
+  footer.institutional .ft-logos { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 8px; }
+  footer.institutional .ft-logo { height: 32px; opacity: 0.85; }
+  footer.institutional a { color: #93c5fd; text-decoration: none; }
+  footer.institutional strong { color: #e2e8f0; }
+
+  .hidden { display: none !important; }
+</style>
+<script src="jsQR.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="hdr-brand">
+    <img class="hdr-logo" alt="Poli-USP" src="data:image/jpeg;base64,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">
+    <div>
+      <h1>Colector C1 · Legado Sustentável</h1>
+      <div class="subhead">
+        <span>FAPESP 2026/26432-4 · Escola Politécnica da USP · PMI</span>
+        <span id="hdr-net" class="pill pill-dark">Verificando...</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="tab-reg">1. Registrar</button>
+  <button data-tab="tab-list">2. Guardados (<span id="cnt-total">0</span>)</button>
+  <button data-tab="tab-exp">3. Exportar ZIP</button>
+  <button data-tab="tab-cfg">4. Preload/Diag</button>
+</nav>
+
+<main>
+  <!-- TAB 1: REGISTRO -->
+  <section id="tab-reg" class="tab-panel active">
+    <div class="card">
+      <h2>Modo de Operación</h2>
+      <div class="seg" id="mode-seg">
+        <button type="button" class="active" data-mode="MUESTRA">Muestreo Cantera (F1)</button>
+        <button type="button" data-mode="CUSTODIA">Custodia / Lab (F2-F3)</button>
+      </div>
+      <div class="row">
+        <div>
+          <label for="f-origen-reg">Origen del Registro</label>
+          <select id="f-origen-reg">
+            <option value="CAMPO_PWA">CAMPO_PWA (Directo en celular)</option>
+            <option value="CONTINGENCIA_PAPEL">CONTINGENCIA_PAPEL (Transcrito)</option>
+            <option value="LAB_WEB">LAB_WEB (Recepcion/Cuarteo)</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-operador">Operador</label>
+          <input id="f-operador" type="text" placeholder="Nombre del operador (obligatorio)">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>A. Identificación por QR o Código Canónico</h2>
+      <div class="row3">
+        <button type="button" id="btn-scan-live" class="btn btn-dark" style="margin-top:0">Escanear QR (Cámara)</button>
+        <label class="btn btn-outline" style="margin-top:0; cursor:pointer">
+          QR Foto Directa
+          <input id="inp-qr-img" type="file" accept="image/*" capture="environment" class="hidden">
+        </label>
+        <label class="btn btn-outline" style="margin-top:0; cursor:pointer">
+          QR desde Galería
+          <input id="inp-qr-gallery" type="file" accept="image/*" class="hidden">
+        </label>
+      </div>
+      <!-- FUTURO: Boton NFC (Sprint 4+). Requiere HTTPS + Android Chrome 89+. iOS NO soportado.
+      <button type="button" id="btn-nfc-scan" class="btn btn-outline" style="margin-top:6px">
+        Leer Tag NFC
+      </button>
+      -->
+      <div id="qr-scanner-box">
+        <video id="qr-video" playsinline muted></video>
+        <canvas id="qr-canvas" class="hidden"></canvas>
+        <button type="button" id="btn-stop-scan" class="btn btn-err btn-sm" style="margin:6px">Detener Cámara</button>
+      </div>
+
+      <label for="f-codigo">Código de Muestra / Submuestra *</label>
+      <input id="f-codigo" type="text" placeholder="LS-CB-GRN-0001 o LS-CB-GRN-0001-CBR-01" style="text-transform:uppercase; font-weight:700">
+
+      <div id="preload-picker-wrap" class="hidden">
+        <label for="f-preload-sel">O elegir código PRELOAD cargado</label>
+        <select id="f-preload-sel">
+          <option value="">-- Seleccionar del lote PRELOAD --</option>
+        </select>
+      </div>
+
+      <label>Constructor Rápido de Código (sin teclado):</label>
+      <div class="row3">
+        <select id="b-loc">
+          <option value="CB">CB (Capão Bonito)</option>
+          <option value="OP">OP (Ouro Preto)</option>
+        </select>
+        <select id="b-lit">
+          <option value="GRN">GRN (Granito)</option>
+          <option value="QTZ">QTZ (Cuarcita)</option>
+          <option value="EST">EST (Esteatito)</option>
+        </select>
+        <input id="b-num" type="number" min="1" max="9999" value="1" placeholder="Nº">
+      </div>
+      <div class="row" style="margin-top:6px">
+        <select id="b-ens">
+          <option value="">(Muestra madre sin subcódigo)</option>
+          <option value="GRN">-GRN (Granulometría)</option>
+          <option value="MOR">-MOR (Morfología C2)</option>
+          <option value="LIM">-LIM (Atterberg)</option>
+          <option value="PRO">-PRO (Proctor)</option>
+          <option value="CBR">-CBR (CBR 4d)</option>
+          <option value="UCS">-UCS (Compresión)</option>
+          <option value="LA">-LA (Los Ángeles)</option>
+        </select>
+        <button type="button" id="btn-build-code" class="btn btn-outline" style="margin-top:0">Aplicar Código</button>
+      </div>
+      <div id="code-parse-info" class="record-meta"></div>
+    </div>
+
+    <!-- BLOQUE MUESTREO F1 -->
+    <div id="panel-muestra">
+      <div class="card">
+        <h2>B. Geolocalización Satelital (Offline)</h2>
+        <button type="button" id="btn-gps" class="btn btn-primary" style="margin-top:0">Capturar GPS Satelital Ahora</button>
+        <div id="gps-status" class="record-meta" style="margin-top:6px">Sin lectura GPS aún.</div>
+        <div class="row" style="margin-top:6px">
+          <div><label for="f-lat">Latitud (WGS84)</label><input id="f-lat" type="number" step="any" placeholder="-24.005..."></div>
+          <div><label for="f-lon">Longitud (WGS84)</label><input id="f-lon" type="number" step="any" placeholder="-48.348..."></div>
+        </div>
+        <div class="row">
+          <div><label for="f-alt">Altitud (m)</label><input id="f-alt" type="number" step="any"></div>
+          <div><label for="f-prec">Precisión (± m)</label><input id="f-prec" type="number" step="any"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>C. Procedencia y Características de Campo</h2>
+        <div class="row">
+          <div>
+            <label for="f-cantera">Cantera / Empresa</label>
+            <input id="f-cantera" type="text" list="dl-canteras" placeholder="Ej. Pedreira X">
+            <datalist id="dl-canteras">
+              <option value="Capao Bonito - Cantera A">
+              <option value="Ouro Preto - Cantera Cuarcita">
+              <option value="Ouro Preto - Artesanal Esteatito">
+            </datalist>
+          </div>
+          <div>
+            <label for="f-frente">Frente / Pila / Punto</label>
+            <input id="f-frente" type="text" placeholder="Pila estéril Norte / Tajo 2">
+          </div>
+        </div>
+
+        <label>Tipo Físico del Residuo</label>
+        <div class="chip-group" id="chips-fisico">
+          <button type="button" class="chip active" data-val="Bloque/Fragmento">Bloque/Fragmento</button>
+          <button type="button" class="chip" data-val="Triturado/Grava">Triturado/Grava</button>
+          <button type="button" class="chip" data-val="Polvo/Fino">Polvo/Fino</button>
+          <button type="button" class="chip" data-val="Lodo/Corte">Lodo/Corte</button>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+          <div><label for="f-sacos">Nº de Sacos</label><input id="f-sacos" type="number" min="1" value="1"></div>
+          <div><label for="f-masa">Masa Total Est. (kg)</label><input id="f-masa" type="number" step="0.1" min="0" placeholder="25.0"></div>
+        </div>
+
+        <label for="f-notas">Litología Macroscópica / Observaciones</label>
+        <textarea id="f-notas" maxlength="2000" placeholder="Color, humedad aparente, alteración, contaminación visible..."></textarea>
+      </div>
+
+      <div class="card">
+        <h2>D. Evidencia Fotográfica (Compresión &le;1600px + SHA-256)</h2>
+        <label class="btn btn-dark" style="margin-top:0; cursor:pointer">
+          Tomar / Adjuntar Foto
+          <input id="inp-foto" type="file" accept="image/*" capture="environment" multiple class="hidden">
+        </label>
+        <div id="foto-preview" class="photo-list"></div>
+      </div>
+
+      <button type="button" id="btn-save-muestra" class="btn btn-ok">GUARDAR MUESTRA OFFLINE</button>
+    </div>
+
+    <!-- BLOQUE CUSTODIA / LAB F2-F3 -->
+    <div id="panel-custodia" class="hidden">
+      <div class="card">
+        <h2>Movimiento de Custodia / Cuarteo / Ingreso Lab</h2>
+        <label for="c-evento">Evento</label>
+        <select id="c-evento">
+          <option value="RECEPCION_USP">RECEPCION_USP (Llegada desde cantera)</option>
+          <option value="TRASLADO">TRASLADO (Movimiento entre laboratorios)</option>
+          <option value="CUARTEO">CUARTEO (Fraccionamiento / Submuestra)</option>
+          <option value="INGRESO_ENSAYO">INGRESO_ENSAYO (Inicio ensayo normado)</option>
+          <option value="ARCHIVO">ARCHIVO / DESCARTE</option>
+        </select>
+        <div class="row">
+          <div>
+            <label for="c-origen">Ubicación Origen</label>
+            <select id="c-origen">
+              <option value="CANTERA">CANTERA</option>
+              <option value="ALMACEN_PMI">ALMACEN_PMI</option>
+              <option value="LMR">LMR (Mecánica de Rocas)</option>
+              <option value="LTP">LTP (Pavimentación)</option>
+              <option value="LCT">LCT (Caracterización Tecn.)</option>
+            </select>
+          </div>
+          <div>
+            <label for="c-destino">Ubicación Destino</label>
+            <select id="c-destino">
+              <option value="ALMACEN_PMI">ALMACEN_PMI</option>
+              <option value="LMR">LMR</option>
+              <option value="LTP">LTP</option>
+              <option value="LCT">LCT</option>
+              <option value="CANTERA">CANTERA</option>
+            </select>
+          </div>
+        </div>
+        <label for="c-obs">Observaciones (pesaje control, secado, probeta, integridad etiqueta)</label>
+        <textarea id="c-obs" maxlength="2000" placeholder="Ej. Saco íntegro, etiqueta exterior legible, humedad natural..."></textarea>
+        <button type="button" id="btn-save-custodia" class="btn btn-ok">GUARDAR EVENTO DE CUSTODIA OFFLINE</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: GUARDADOS -->
+  <section id="tab-list" class="tab-panel">
+    <div class="card">
+      <h2>Registros Locales en IndexedDB</h2>
+      <div class="row">
+        <select id="filter-status">
+          <option value="ALL">Todos</option>
+          <option value="PENDING">Solo pendientes de exportar</option>
+          <option value="EXPORTED">Ya exportados</option>
+        </select>
+        <input id="filter-q" type="text" placeholder="Buscar código LS-...">
+      </div>
+    </div>
+    <div id="list-container"></div>
+  </section>
+
+  <!-- TAB 3: EXPORTAR ZIP -->
+  <section id="tab-exp" class="tab-panel">
+    <div class="card">
+      <h2>Resumen para Sincronización con PostgreSQL (USP)</h2>
+      <div id="export-summary" class="record-meta" style="font-size:0.9rem; color:var(--ink)">Cargando...</div>
+      <button type="button" id="btn-export-zip" class="btn btn-primary">DESCARGAR PAQUETE ZIP (CSV + FOTOS + MANIFEST SHA-256)</button>
+      <button type="button" id="btn-export-json" class="btn btn-outline">Descargar Respaldo Crudo JSON</button>
+    </div>
+
+    <div class="card">
+      <h2>Mantenimiento Seguro de Memoria</h2>
+      <p class="record-meta">Ejecuta esto solo después de haber importado el ZIP en la laptop/servidor de USP y verificado que la ingesta salió OK.</p>
+      <button type="button" id="btn-clear-exported" class="btn btn-warn">Borrar Solo Registros Ya Exportados</button>
+      <button type="button" id="btn-clear-all" class="btn btn-err">Vaciar Toda la Memoria Local</button>
+    </div>
+  </section>
+
+  <!-- TAB 4: PRELOAD Y DIAGNOSTICO -->
+  <section id="tab-cfg" class="tab-panel">
+    <div class="card">
+      <h2>Cargar Catálogo PRELOAD (desde generador_etiquetas_qr.py)</h2>
+      <p class="record-meta">Carga aquí el archivo <code>*_preload.json</code> o <code>*_preload.csv</code> antes de salir a cantera para seleccionar códigos pendientes sin digitar.</p>
+      <label class="btn btn-dark" style="cursor:pointer">
+        Seleccionar *_preload.json / .csv
+        <input id="inp-preload" type="file" accept=".json,.csv" class="hidden">
+      </label>
+      <div id="preload-stats" class="record-meta" style="margin-top:6px">Sin catálogo PRELOAD cargado.</div>
+    </div>
+
+    <div class="card">
+      <h2>Diagnóstico del Dispositivo / Navegador</h2>
+      <div id="diag-box" class="mono" style="font-size:0.8rem; white-space:pre-wrap"></div>
+      <p class="record-meta" style="margin-top:8px">
+        Nota Android/Chrome: si abres este archivo vía <code>file:///</code> y Chrome bloquea cámara o GPS por seguridad, sírvelo localmente con <code>python -m http.server 8080</code> en USP o ábrelo desde tu carpeta sincronizada en contexto seguro (localhost / HTTPS). Los hashes SHA-256, IndexedDB y exportación ZIP funcionan en todos los modos.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="institutional">
+  <div class="ft-logos">
+    <svg class="ft-logo" viewBox="0 0 984.76 399.31" fill="#94a3b8" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.333 0 0 -1.333 0 399.307)"><g transform="scale(.1)"><g clip-path="url(#a)"><path d="m2395.31 698.602c0-274.832-224.18-499-499-499V0c253.58 0 476.36 136.34 598.79 339.488v359.114zm199.59 0c0-274.832 224.2-499 499.08-499V0C2840.27 0 2617.56 136.34 2495.1 339.488v359.114h99.8zM4990.27 2296.18c0 274.85 224.13 498.99 499.01 498.99v199.64c-253.65 0-476.46-136.38-598.82-339.5v-359.13h99.81zm-199.68-.32h99.87v359.09c-122.39 203.15-345.24 339.5-598.91 339.5v-199.58c274.94 0 499.04-224.2 499.04-499.01zm0-1597.008c0-274.782-224.1-499.563-499.04-499.563V.27c384.84 0 698.72 313.89 698.72 698.582H4790.59zM7185.95 2295.79h199.73c0 384.79-313.87 698.6-698.75 698.6v-199.52c274.79 0 499.02-224.2 499.02-499.08zM199.609 698.852H0C0 314.16 313.824.27 698.629.27V199.898c-274.875 0-499.02 224.172-499.02 498.954zM3094.12 2994.39c-365.71 0-699.43-315.41-698.81-698.35h199.77c0 283.7 231.8 499.13 499.02 499.23-.67 95-.59 126.58.02 199.12zM4990.27 199.84V.09h1197.68V998.371h1197.73V2295.79h-199.73V1198h-998V2295.79h-199.64V199.898l-998.04-.058zm499.01 2794.97 1197.65-.42v-199.73l-1197.65.51zm-498.55-1855.17-.46-440.788h-199.68v357.998l-1167.54 1169.4 139.93 141.49 1227.75-1228.1zm-2595.42 715.39 1227.74-1228.069 139.93 141.5-1167.9 1169.369v358.21H2395.31zM0 2994.39h2395.31v-199.52H1397.27V703.102h-199.65V2794.87H199.609V698.852H0zM698.629 199.898H1896.49V.09H698.629zm2395.381 2794.442 1197.68.05v-199.73l-1197.68.61zm-.03-2794.738 1197.71-.723V.219l-1197.68.312-.03 199.071v0"/></g></g></g><defs><clipPath id="a"><path d="M0 2994.81V0h7385.68v2994.81z"/></clipPath></defs></svg>
+    <span style="color:#475569; font-size:0.65rem">+</span>
+    <span style="color:#e2e8f0; font-weight:800; font-size:0.85rem; letter-spacing:0.5px">FAPESP</span>
+  </div>
+  <strong>Projeto Legado Sustentável</strong> · Escola Politécnica da Universidade de São Paulo<br>
+  Departamento de Engenharia de Minas e Petróleo (PMI) · Processo FAPESP 2026/26432-4<br>
+  <span style="color:#64748b; font-size:0.65rem">Colector de Campo C1 v2.0 · PWA Offline-first · Dados protegidos por SHA-256</span>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ------------------------------------------------------------
+  // 1. Utilidades base: Tiempo UTC, Escape CSV, Toast, Regex LS
+  // ------------------------------------------------------------
+  const nowUtcIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+
+  function validateGPS(lat, lon) {
+    if (lat === null && lon === null) return true; // GPS opcional
+    const la = parseFloat(lat), lo = parseFloat(lon);
+    if (isNaN(la) || isNaN(lo)) return false;
+    return la >= -90 && la <= 90 && lo >= -180 && lo <= 180;
+  }
+
+  function toast(msg, ms = 2600) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.style.display = "block";
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { el.style.display = "none"; }, ms);
+  }
+
+  function csvCell(v) {
+    const s = v === null || v === undefined ? "" : String(v);
+    // Escapar formula injection para Excel/Calc (prefijos =, +, -, @, TAB, CR)
+    if (/^[=+\-@\t\r]/.test(s)) return '"' + "'" + s.replace(/"/g, '""') + '"';
+    if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function toCsv(headers, rows) {
+    const lines = [headers.map(csvCell).join(",")];
+    for (const r of rows) {
+      lines.push(headers.map(h => csvCell(r[h])).join(","));
+    }
+    return "\uFEFF" + lines.join("\r\n") + "\r\n";
+  }
+
+  function parseLsCode(raw) {
+    const code = (raw || "").trim().toUpperCase();
+    // Madre: LS-CB-GRN-0001 | Sub: LS-CB-GRN-0001-CBR-01 | Test: LS-TEST-GRN-0001
+    const mSub = code.match(/^(LS-(?:CB|OP|TEST)-(?:GRN|QTZ|EST)-\d{4})-(GRN|MOR|LIM|PRO|CBR|UCS|LA)-(\d{2})$/);
+    if (mSub) {
+      const p = mSub[1].split("-");
+      return { valid: true, codigo: code, parent: mSub[1], loc: p[1], lit: p[2], num: p[3], ensayo: mSub[2], sub: mSub[3] };
+    }
+    const mMom = code.match(/^LS-(CB|OP|TEST)-(GRN|QTZ|EST)-(\d{4})$/);
+    if (mMom) {
+      return { valid: true, codigo: code, parent: "", loc: mMom[1], lit: mMom[2], num: mMom[3], ensayo: "", sub: "" };
+    }
+    return { valid: false, codigo: code, parent: "", loc: "", lit: "", num: "", ensayo: "", sub: "" };
+  }
+
+  // ------------------------------------------------------------
+  // 2. SHA-256 (WebCrypto + Fallback JS puro para file:// offline)
+  // ------------------------------------------------------------
+  function sha256PureJs(bytes) {
+    const K = new Uint32Array([
+      0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+      0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+      0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+      0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+      0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+      0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+      0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+      0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+    ]);
+    const H = new Uint32Array([
+      0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+    ]);
+    const l = bytes.length;
+    const bitLenHi = Math.floor(l / 0x20000000);
+    const bitLenLo = (l << 3) >>> 0;
+    const padLen = ((l + 9 + 63) & ~63);
+    const msg = new Uint8Array(padLen);
+    msg.set(bytes);
+    msg[l] = 0x80;
+    const dv = new DataView(msg.buffer);
+    dv.setUint32(padLen - 8, bitLenHi, false);
+    dv.setUint32(padLen - 4, bitLenLo, false);
+
+    const w = new Uint32Array(64);
+    const rotr = (x, n) => (x >>> n) | (x << (32 - n));
+    for (let i = 0; i < padLen; i += 64) {
+      for (let t = 0; t < 16; t++) w[t] = dv.getUint32(i + t * 4, false);
+      for (let t = 16; t < 64; t++) {
+        const s0 = rotr(w[t-15],7) ^ rotr(w[t-15],18) ^ (w[t-15] >>> 3);
+        const s1 = rotr(w[t-2],17) ^ rotr(w[t-2],19) ^ (w[t-2] >>> 10);
+        w[t] = (w[t-16] + s0 + w[t-7] + s1) >>> 0;
+      }
+      let [a,b,c,d,e,f,g,h] = H;
+      for (let t = 0; t < 64; t++) {
+        const S1 = rotr(e,6) ^ rotr(e,11) ^ rotr(e,25);
+        const ch = (e & f) ^ ((~e) & g);
+        const temp1 = (h + S1 + ch + K[t] + w[t]) >>> 0;
+        const S0 = rotr(a,2) ^ rotr(a,13) ^ rotr(a,22);
+        const maj = (a & b) ^ (a & c) ^ (b & c);
+        const temp2 = (S0 + maj) >>> 0;
+        h = g; g = f; f = e; e = (d + temp1) >>> 0;
+        d = c; c = b; b = a; a = (temp1 + temp2) >>> 0;
+      }
+      H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+      H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
+    }
+    return Array.from(H).map(x => x.toString(16).padStart(8, "0")).join("");
+  }
+
+  async function sha256Hex(uint8) {
+    if (window.crypto && window.crypto.subtle) {
+      try {
+        const digest = await window.crypto.subtle.digest("SHA-256", uint8);
+        return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+      } catch (_) {}
+    }
+    return sha256PureJs(uint8);
+  }
+
+  // ------------------------------------------------------------
+  // 3. Constructor PKZIP puro en JS (Store + CRC32 + UTF-8)
+  // ------------------------------------------------------------
+  const CRC_TABLE = (() => {
+    const tbl = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+      tbl[n] = c >>> 0;
+    }
+    return tbl;
+  })();
+
+  function crc32(bytes) {
+    let c = 0xffffffff;
+    for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+
+  function buildZipBlob(entries) {
+    // entries: [{ name: string, data: Uint8Array }]
+    const enc = new TextEncoder();
+    const now = new Date();
+    const dosTime = ((now.getHours() & 0x1f) << 11) | ((now.getMinutes() & 0x3f) << 5) | ((now.getSeconds() >> 1) & 0x1f);
+    const dosDate = ((((Math.max(1980, now.getFullYear()) - 1980) & 0x7f) << 9) | (((now.getMonth() + 1) & 0xf) << 5) | (now.getDate() & 0x1f));
+
+    const localChunks = [];
+    const centralChunks = [];
+    let offset = 0;
+
+    for (const entry of entries) {
+      const nameBytes = enc.encode(entry.name);
+      const data = entry.data;
+      const crc = crc32(data);
+
+      // Local file header (30 bytes + name)
+      const lh = new Uint8Array(30 + nameBytes.length);
+      const ldv = new DataView(lh.buffer);
+      ldv.setUint32(0, 0x04034b50, true);
+      ldv.setUint16(4, 20, true);          // version needed 2.0
+      ldv.setUint16(6, 0x0800, true);      // UTF-8 filename flag
+      ldv.setUint16(8, 0, true);           // method 0 = Store
+      ldv.setUint16(10, dosTime, true);
+      ldv.setUint16(12, dosDate, true);
+      ldv.setUint32(14, crc, true);
+      ldv.setUint32(18, data.length, true);
+      ldv.setUint32(22, data.length, true);
+      ldv.setUint16(26, nameBytes.length, true);
+      ldv.setUint16(28, 0, true);
+      lh.set(nameBytes, 30);
+
+      localChunks.push(lh, data);
+
+      // Central directory header (46 bytes + name)
+      const ch = new Uint8Array(46 + nameBytes.length);
+      const cdv = new DataView(ch.buffer);
+      cdv.setUint32(0, 0x02014b50, true);
+      cdv.setUint16(4, 20, true);
+      cdv.setUint16(6, 20, true);
+      cdv.setUint16(8, 0x0800, true);
+      cdv.setUint16(10, 0, true);
+      cdv.setUint16(12, dosTime, true);
+      cdv.setUint16(14, dosDate, true);
+      cdv.setUint32(16, crc, true);
+      cdv.setUint32(20, data.length, true);
+      cdv.setUint32(24, data.length, true);
+      cdv.setUint16(28, nameBytes.length, true);
+      cdv.setUint16(30, 0, true);
+      cdv.setUint16(32, 0, true);
+      cdv.setUint16(34, 0, true);
+      cdv.setUint16(36, 0, true);
+      cdv.setUint32(38, 0, true);
+      cdv.setUint32(42, offset, true);
+      ch.set(nameBytes, 46);
+
+      centralChunks.push(ch);
+      offset += lh.length + data.length;
+    }
+
+    const centralSize = centralChunks.reduce((a, b) => a + b.length, 0);
+    const eocd = new Uint8Array(22);
+    const edv = new DataView(eocd.buffer);
+    edv.setUint32(0, 0x06054b50, true);
+    edv.setUint16(4, 0, true);
+    edv.setUint16(6, 0, true);
+    edv.setUint16(8, entries.length, true);
+    edv.setUint16(10, entries.length, true);
+    edv.setUint32(12, centralSize, true);
+    edv.setUint32(16, offset, true);
+    edv.setUint16(20, 0, true);
+
+    return new Blob([...localChunks, ...centralChunks, eocd], { type: "application/zip" });
+  }
+
+  // ------------------------------------------------------------
+  // 4. IndexedDB Capa de Persistencia
+  // ------------------------------------------------------------
+  const DB_NAME = "LS_Colector_C1_DB";
+  const DB_VER = 2; // v2: custodia migra de autoIncrement a UUID keyPath
+  let db = null;
+
+  function openDb() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = (ev) => {
+        const d = ev.target.result;
+        if (!d.objectStoreNames.contains("muestras")) d.createObjectStore("muestras", { keyPath: "codigo_muestra" });
+        // v2: custodia usa UUID en vez de autoIncrement para evitar colisiones entre dispositivos
+        if (d.objectStoreNames.contains("custodia") && ev.oldVersion < 2) {
+          d.deleteObjectStore("custodia");
+        }
+        if (!d.objectStoreNames.contains("custodia")) d.createObjectStore("custodia", { keyPath: "id" });
+        if (!d.objectStoreNames.contains("preload")) d.createObjectStore("preload", { keyPath: "codigo_muestra" });
+      };
+      req.onsuccess = () => { db = req.result; resolve(db); };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  const dbGetAll = (store) => new Promise((res, rej) => {
+    const tx = db.transaction(store, "readonly");
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => res(req.result || []);
+    req.onerror = () => rej(req.error);
+  });
+
+  const dbPut = (store, val) => new Promise((res, rej) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).put(val);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+
+  const dbDelete = (store, key) => new Promise((res, rej) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).delete(key);
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+
+  const dbClear = (store) => new Promise((res, rej) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).clear();
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+
+  // ------------------------------------------------------------
+  // 5. Estado UI, QR Scanner, Fotos & GPS
+  // ------------------------------------------------------------
+  let currentPhotos = []; // [{ filename, dataUrl, bytes (Uint8Array), sha256 }]
+  let scanStream = null;
+  let scanRaf = null;
+  let physicalType = "Bloque/Fragmento";
+
+  function updateOnlinePill() {
+    const pill = document.getElementById("hdr-net");
+    if (navigator.onLine) {
+      pill.textContent = "Con Red (Listo p/ sync)";
+      pill.className = "pill pill-ok";
+    } else {
+      pill.textContent = "100% OFFLINE (IndexedDB OK)";
+      pill.className = "pill pill-warn";
+    }
+  }
+  window.addEventListener("online", updateOnlinePill);
+  window.addEventListener("offline", updateOnlinePill);
+
+  // Tabs
+  document.querySelectorAll("nav.tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll("section.tab-panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.tab).classList.add("active");
+      if (btn.dataset.tab === "tab-list") refreshList();
+      if (btn.dataset.tab === "tab-exp") refreshExportSummary();
+      if (btn.dataset.tab === "tab-cfg") refreshDiagnostics();
+    });
+  });
+
+  // Mode Switch
+  document.querySelectorAll("#mode-seg button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#mode-seg button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const m = btn.dataset.mode;
+      document.getElementById("panel-muestra").classList.toggle("hidden", m !== "MUESTRA");
+      document.getElementById("panel-custodia").classList.toggle("hidden", m !== "CUSTODIA");
+    });
+  });
+
+  // Chips tipo fisico
+  document.querySelectorAll("#chips-fisico .chip").forEach(ch => {
+    ch.addEventListener("click", () => {
+      document.querySelectorAll("#chips-fisico .chip").forEach(c => c.classList.remove("active"));
+      ch.classList.add("active");
+      physicalType = ch.dataset.val;
+    });
+  });
+
+  function applyCodeInfo(codeStr) {
+    const input = document.getElementById("f-codigo");
+    input.value = (codeStr || "").trim().toUpperCase();
+    const info = parseLsCode(input.value);
+    const out = document.getElementById("code-parse-info");
+    if (!input.value) { out.textContent = ""; return; }
+    if (info.valid) {
+      out.innerHTML = `<span class="pill pill-ok">Código Válido</span> Loc: <b>${info.loc}</b> · Lit: <b>${info.lit}</b>${info.ensayo ? ` · Ensayo: <b>${info.ensayo}-${info.sub}</b>` : ""}`;
+      if (info.loc === "CB" || info.loc === "OP") document.getElementById("b-loc").value = info.loc;
+      if (info.lit) document.getElementById("b-lit").value = info.lit;
+    } else {
+      out.innerHTML = `<span class="pill pill-warn">Formato libre</span> Esperado: LS-CB-GRN-0001`;
+    }
+  }
+
+  document.getElementById("f-codigo").addEventListener("input", (e) => applyCodeInfo(e.target.value));
+  document.getElementById("btn-build-code").addEventListener("click", () => {
+    const loc = document.getElementById("b-loc").value;
+    const lit = document.getElementById("b-lit").value;
+    const num = String(Math.max(1, parseInt(document.getElementById("b-num").value || "1", 10))).padStart(4, "0");
+    const ens = document.getElementById("b-ens").value;
+    const code = ens ? `LS-${loc}-${lit}-${num}-${ens}-01` : `LS-${loc}-${lit}-${num}`;
+    applyCodeInfo(code);
+  });
+
+  document.getElementById("f-preload-sel").addEventListener("change", (e) => {
+    if (e.target.value) applyCodeInfo(e.target.value);
+  });
+
+  // QR Scanner (Native BarcodeDetector)
+  // ---------------------------------------------------------------
+  // NOTA FUTURA — NFC (Web NFC API):
+  //   Web NFC (NDEFReader) solo funciona en Android Chrome 89+ con HTTPS.
+  //   iOS Safari NO soporta Web NFC (no hay timeline de Apple).
+  //   Implementacion futura:
+  //     if ("NDEFReader" in window) {
+  //       const reader = new NDEFReader();
+  //       await reader.scan();
+  //       reader.addEventListener("reading", ({ serialNumber, message }) => {
+  //         // serialNumber = UID del tag NFC
+  //         // Buscar en PRELOAD o asignar al campo nfc_uid de la muestra
+  //         applyCodeInfo(serialNumber);
+  //         toast("NFC detectado: " + serialNumber);
+  //       });
+  //     }
+  //   Permisos requeridos: "nfc" (prompt automatico en Android).
+  //   Requiere HTTPS obligatorio. Prioridad: Sprint 4+.
+  // ---------------------------------------------------------------
+  let scannerBusy = false; // Guard contra race condition
+  function stopCamera() {
+    scannerBusy = false;
+    if (scanRaf) { cancelAnimationFrame(scanRaf); scanRaf = null; }
+    if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+    document.getElementById("qr-scanner-box").style.display = "none";
+  }
+  document.getElementById("btn-stop-scan").addEventListener("click", stopCamera);
+
+  // Deteccion QR: BarcodeDetector (nativo, Android/Chrome) o jsQR (fallback iOS/Firefox)
+  const hasNativeDetector = "BarcodeDetector" in window;
+  const hasJsQR = typeof jsQR === "function";
+
+  async function detectQrFromVideo(video) {
+    if (!video.videoWidth || !video.videoHeight) return null;
+    // 1. Intenta BarcodeDetector nativo primero si existe
+    if (hasNativeDetector) {
+      try {
+        const detector = new BarcodeDetector({ formats: ["qr_code"] });
+        const codes = await detector.detect(video);
+        if (codes && codes.length > 0 && codes[0].rawValue) return codes[0].rawValue;
+      } catch (_) {}
+    }
+    // 2. Fallback universal jsQR (Windows Desktop, iOS Safari, Firefox)
+    if (hasJsQR) {
+      const canvas = document.getElementById("qr-canvas");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const result = jsQR(imgData.data, canvas.width, canvas.height, { inversionAttempts: "attemptBoth" });
+      if (result && result.data) return result.data;
+    }
+    return null;
+  }
+
+  document.getElementById("btn-scan-live").addEventListener("click", async () => {
+    if (scannerBusy) return; // Evitar doble apertura
+    if (!hasNativeDetector && !hasJsQR) {
+      toast("QR no soportado: carga jsQR.min.js junto al HTML. Usa 'Constructor manual'.", 3800);
+      return;
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast("Cámara bloqueada (file://). Abre desde http://127.0.0.1:8000/colector/", 3800);
+      return;
+    }
+    scannerBusy = true;
+    try {
+      scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } });
+      const video = document.getElementById("qr-video");
+      video.srcObject = scanStream;
+      await video.play();
+      document.getElementById("qr-scanner-box").style.display = "block";
+      const tick = async () => {
+        if (!scanStream || !scannerBusy) return; // Guard doble
+        try {
+          const val = await detectQrFromVideo(video);
+          if (val) {
+            // Detener ANTES de procesar para evitar doble deteccion
+            stopCamera();
+            applyCodeInfo(val);
+            if (navigator.vibrate) navigator.vibrate(120);
+            toast("QR detectado: " + val);
+            return;
+          }
+        } catch (_) {}
+        if (scanStream) scanRaf = requestAnimationFrame(tick);
+      };
+      scanRaf = requestAnimationFrame(tick);
+    } catch (err) {
+      toast("No se pudo abrir cámara: " + err.message, 3500);
+      stopCamera();
+    }
+  });
+
+  // Funcion compartida: detectar QR desde archivo de imagen (foto directa o galeria)
+  async function handleQrFromFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!hasNativeDetector && !hasJsQR) {
+      toast("QR no soportado: carga jsQR.min.js junto al HTML. Usa 'Constructor manual'.", 3500);
+      e.target.value = "";
+      return;
+    }
+    try {
+      const bmp = await createImageBitmap(file);
+      let val = null;
+      if (hasNativeDetector) {
+        try {
+          const detector = new BarcodeDetector({ formats: ["qr_code"] });
+          const codes = await detector.detect(bmp);
+          if (codes && codes.length > 0 && codes[0].rawValue) val = codes[0].rawValue;
+        } catch (_) {}
+      }
+      if (!val && hasJsQR) {
+        const canvas = document.getElementById("qr-canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        canvas.width = bmp.width;
+        canvas.height = bmp.height;
+        ctx.drawImage(bmp, 0, 0);
+        const imgData = ctx.getImageData(0, 0, bmp.width, bmp.height);
+        const result = jsQR(imgData.data, bmp.width, bmp.height, { inversionAttempts: "attemptBoth" });
+        if (result && result.data) val = result.data;
+      }
+      if (val) {
+        applyCodeInfo(val);
+        toast("QR leído: " + val);
+      } else {
+        toast("No se detectó un QR legible en esa imagen.", 3000);
+      }
+    } catch (err) {
+      toast("Error al leer QR: " + err.message, 3000);
+    }
+    e.target.value = "";
+  }
+  document.getElementById("inp-qr-img").addEventListener("change", handleQrFromFile);
+  document.getElementById("inp-qr-gallery").addEventListener("change", handleQrFromFile);
+
+  // GPS
+  document.getElementById("btn-gps").addEventListener("click", () => {
+    const st = document.getElementById("gps-status");
+    if (!navigator.geolocation) {
+      st.textContent = "Geolocation no soportado en este navegador.";
+      return;
+    }
+    st.textContent = "Buscando señal satelital GPS (puede tardar 3-15 s en campo)...";
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude, altitude, accuracy } = pos.coords;
+        document.getElementById("f-lat").value = latitude.toFixed(6);
+        document.getElementById("f-lon").value = longitude.toFixed(6);
+        document.getElementById("f-alt").value = altitude !== null ? altitude.toFixed(1) : "";
+        document.getElementById("f-prec").value = accuracy !== null ? accuracy.toFixed(1) : "";
+        let cls = "pill-ok", msg = "Precisión excelente";
+        if (accuracy > 25) { cls = "pill-err"; msg = "Baja precisión (>25m) — reintentar a cielo abierto"; }
+        else if (accuracy > 10) { cls = "pill-warn"; msg = "Precisión aceptable"; }
+        st.innerHTML = `<span class="pill ${cls}">±${accuracy.toFixed(1)} m (${msg})</span> · ${nowUtcIso()}`;
+      },
+      (err) => {
+        st.innerHTML = `<span class="pill pill-err">Error GPS (${err.code}): ${err.message}</span>`;
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  });
+
+  // Photos compression <= 1600px + SHA-256
+  function compressImage(file, maxDim = 1600, quality = 0.80) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width >= height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(async (blob) => {
+          if (!blob) return reject(new Error("Fallo compresión JPEG"));
+          const ab = await blob.arrayBuffer();
+          const u8 = new Uint8Array(ab);
+          const hash = await sha256Hex(u8);
+          const reader = new FileReader();
+          reader.onload = () => resolve({ dataUrl: reader.result, bytes: u8, sha256: hash, width, height });
+          reader.readAsDataURL(blob);
+        }, "image/jpeg", quality);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Imagen inválida")); };
+      img.src = url;
+    });
+  }
+
+  function renderPhotoPreviews() {
+    const box = document.getElementById("foto-preview");
+    box.innerHTML = "";
+    currentPhotos.forEach((p, idx) => {
+      const div = document.createElement("div");
+      div.className = "photo-item";
+      div.innerHTML = `
+        <img src="${p.dataUrl}" alt="${p.filename}">
+        <div><b>${p.filename}</b> (${Math.round(p.bytes.length / 1024)} KB)</div>
+        <div class="mono" title="${p.sha256}">SHA: ${p.sha256.slice(0, 14)}...</div>
+        <button type="button" class="btn btn-err btn-sm" data-rm="${idx}">Quitar</button>
+      `;
+      div.querySelector("button").addEventListener("click", () => {
+        currentPhotos.splice(idx, 1);
+        renderPhotoPreviews();
+      });
+      box.appendChild(div);
+    });
+  }
+
+  const MAX_FOTOS_BYTES = 40 * 1024 * 1024; // 40 MB limite IndexedDB seguro
+  document.getElementById("inp-foto").addEventListener("change", async (e) => {
+    const files = Array.from(e.target.files || []);
+    const code = (document.getElementById("f-codigo").value || "SIN_CODIGO").trim().toUpperCase();
+    let totalBytes = currentPhotos.reduce((s, p) => s + p.bytes.length, 0);
+    for (const f of files) {
+      try {
+        const res = await compressImage(f, 1600, 0.80);
+        if (totalBytes + res.bytes.length > MAX_FOTOS_BYTES) {
+          toast(`Limite de fotos alcanzado (~${Math.round(MAX_FOTOS_BYTES / 1048576)} MB). No se agrego ${f.name}.`, 3500);
+          break;
+        }
+        const seq = currentPhotos.length + 1;
+        const uid = crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : String(Date.now()).slice(-8);
+        currentPhotos.push({
+          filename: `${code}_f${seq}_${uid}.jpg`,
+          dataUrl: res.dataUrl,
+          bytes: res.bytes,
+          sha256: res.sha256
+        });
+        totalBytes += res.bytes.length;
+      } catch (err) {
+        toast("Error foto: " + err.message);
+      }
+    }
+    renderPhotoPreviews();
+    e.target.value = "";
+  });
+
+  // ------------------------------------------------------------
+  // 6. Guardar Muestra (F1) y Custodia (F2-F3)
+  // ------------------------------------------------------------
+  document.getElementById("btn-save-muestra").addEventListener("click", async () => {
+    const code = document.getElementById("f-codigo").value.trim().toUpperCase();
+    if (!code) { toast("Ingresa o escanea un código LS-...", 2500); return; }
+    const operadorVal = document.getElementById("f-operador").value.trim();
+    if (!operadorVal) { toast("Ingresa el nombre del operador.", 2500); return; }
+    localStorage.setItem("ls_c1_operador", operadorVal);
+    const latVal = document.getElementById("f-lat").value || null;
+    const lonVal = document.getElementById("f-lon").value || null;
+    if (!validateGPS(latVal, lonVal)) {
+      toast("Coordenadas GPS fuera de rango valido (Lat: -90/90, Lon: -180/180).", 3500);
+      return;
+    }
+    const parsed = parseLsCode(code);
+    const ts = nowUtcIso();
+    // Normaliza nombres de fotos con el codigo final
+    const fotosClean = currentPhotos.map((p, i) => ({
+      filename: `${code}_f${i + 1}.jpg`,
+      dataUrl: p.dataUrl,
+      bytes: Array.from(p.bytes),
+      sha256: p.sha256
+    }));
+
+    const rec = {
+      codigo_muestra: code,
+      parent_codigo: parsed.parent,
+      localidad: parsed.loc || document.getElementById("b-loc").value,
+      litologia: parsed.lit || document.getElementById("b-lit").value,
+      cantera_empresa: document.getElementById("f-cantera").value.trim(),
+      frente_cantera: document.getElementById("f-frente").value.trim(),
+      tipo_fisico: physicalType,
+      num_sacos: parseInt(document.getElementById("f-sacos").value || "1", 10),
+      masa_kg: document.getElementById("f-masa").value ? parseFloat(document.getElementById("f-masa").value) : null,
+      lat_wgs84: document.getElementById("f-lat").value ? parseFloat(document.getElementById("f-lat").value) : null,
+      lon_wgs84: document.getElementById("f-lon").value ? parseFloat(document.getElementById("f-lon").value) : null,
+      alt_m: document.getElementById("f-alt").value ? parseFloat(document.getElementById("f-alt").value) : null,
+      gps_precision_m: document.getElementById("f-prec").value ? parseFloat(document.getElementById("f-prec").value) : null,
+      litologia_notas: document.getElementById("f-notas").value.trim(),
+      operador: document.getElementById("f-operador").value.trim(),
+      origen_registro: document.getElementById("f-origen-reg").value,
+      ts_origen_utc: ts,
+      fotos: fotosClean,
+      exportado: false
+    };
+
+    await dbPut("muestras", rec);
+    // Registra tambien evento inicial COLECTADA en custodia si no es contingencia repetida
+    await dbPut("custodia", {
+      id: crypto.randomUUID(),
+      codigo_muestra: code,
+      evento: "COLECTADA",
+      ubicacion_origen: "CANTERA",
+      ubicacion_destino: "CANTERA",
+      operador: rec.operador,
+      origen_registro: rec.origen_registro,
+      ts_origen_utc: ts,
+      observaciones: rec.frente_cantera ? `Muestreo en ${rec.frente_cantera}` : "Registro inicial",
+      exportado: false
+    });
+
+    toast("Muestra guardada offline: " + code);
+    currentPhotos = [];
+    renderPhotoPreviews();
+    document.getElementById("f-codigo").value = "";
+    document.getElementById("f-notas").value = "";
+    document.getElementById("code-parse-info").textContent = "";
+    // Auto-incrementar contador del constructor rapido
+    const nEl = document.getElementById("b-num");
+    nEl.value = String((parseInt(nEl.value || "1", 10) || 0) + 1);
+    await refreshCounters();
+  });
+
+  document.getElementById("btn-save-custodia").addEventListener("click", async () => {
+    const code = document.getElementById("f-codigo").value.trim().toUpperCase();
+    if (!code) { toast("Ingresa o escanea un código LS-...", 2500); return; }
+    const operadorVal = document.getElementById("f-operador").value.trim();
+    if (!operadorVal) { toast("Ingresa el nombre del operador.", 2500); return; }
+    localStorage.setItem("ls_c1_operador", operadorVal);
+    const rec = {
+      id: crypto.randomUUID(),
+      codigo_muestra: code,
+      evento: document.getElementById("c-evento").value,
+      ubicacion_origen: document.getElementById("c-origen").value,
+      ubicacion_destino: document.getElementById("c-destino").value,
+      operador: document.getElementById("f-operador").value.trim(),
+      origen_registro: document.getElementById("f-origen-reg").value,
+      ts_origen_utc: nowUtcIso(),
+      observaciones: document.getElementById("c-obs").value.trim(),
+      exportado: false
+    };
+    await dbPut("custodia", rec);
+    toast(`Custodia ${rec.evento} guardada para ${code}`);
+    document.getElementById("c-obs").value = "";
+    await refreshCounters();
+  });
+
+  // ------------------------------------------------------------
+  // 7. Lista Local, Edicion Rápida y Contadores
+  // ------------------------------------------------------------
+  async function refreshCounters() {
+    const [m, c] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    document.getElementById("cnt-total").textContent = String(m.length + c.length);
+  }
+
+  async function refreshList() {
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const stFilter = document.getElementById("filter-status").value;
+    const qFilter = document.getElementById("filter-q").value.trim().toUpperCase();
+    const box = document.getElementById("list-container");
+    box.innerHTML = "";
+
+    const matches = (item) => {
+      if (stFilter === "PENDING" && item.exportado) return false;
+      if (stFilter === "EXPORTED" && !item.exportado) return false;
+      if (qFilter && !item.codigo_muestra.includes(qFilter)) return false;
+      return true;
+    };
+
+    const mFiltered = muestras.filter(matches).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+    const cFiltered = custodias.filter(matches).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+
+    if (!mFiltered.length && !cFiltered.length) {
+      box.innerHTML = '<div class="card">No hay registros guardados con ese filtro.</div>';
+      return;
+    }
+
+    for (const m of mFiltered) {
+      const div = document.createElement("div");
+      div.className = "record-card";
+      const badge = m.exportado ? '<span class="pill pill-ok">Exportado</span>' : '<span class="pill pill-warn">Pendiente</span>';
+      const gpsTxt = (m.lat_wgs84 !== null && m.lon_wgs84 !== null) ? `${m.lat_wgs84}, ${m.lon_wgs84} (±${m.gps_precision_m || "?"}m)` : "Sin GPS";
+      div.innerHTML = `
+        <div class="record-head">
+          <strong>[MUESTRA] ${m.codigo_muestra}</strong> ${badge}
+        </div>
+        <div class="record-meta">
+          ${m.localidad}/${m.litologia} · ${m.cantera_empresa || "-"} · ${m.frente_cantera || "-"} · ${m.num_sacos} sacos (${m.masa_kg ?? "-"} kg)<br>
+          GPS: ${gpsTxt} · Fotos: ${(m.fotos || []).length} · ${m.origen_registro} · ${m.ts_origen_utc}
+        </div>
+        <div class="actions-inline">
+          <button class="btn btn-outline btn-sm" data-edit="${m.codigo_muestra}">Cargar en Formulario</button>
+          <button class="btn btn-err btn-sm" data-del="${m.codigo_muestra}">Eliminar</button>
+        </div>
+      `;
+      div.querySelector("[data-edit]").addEventListener("click", () => {
+        applyCodeInfo(m.codigo_muestra);
+        document.getElementById("f-cantera").value = m.cantera_empresa || "";
+        document.getElementById("f-frente").value = m.frente_cantera || "";
+        document.getElementById("f-sacos").value = m.num_sacos || 1;
+        document.getElementById("f-masa").value = m.masa_kg ?? "";
+        document.getElementById("f-lat").value = m.lat_wgs84 ?? "";
+        document.getElementById("f-lon").value = m.lon_wgs84 ?? "";
+        document.getElementById("f-alt").value = m.alt_m ?? "";
+        document.getElementById("f-prec").value = m.gps_precision_m ?? "";
+        document.getElementById("f-notas").value = m.litologia_notas || "";
+        document.getElementById("f-operador").value = m.operador || "";
+        document.getElementById("f-origen-reg").value = m.origen_registro || "CAMPO_PWA";
+        currentPhotos = (m.fotos || []).map(f => ({
+          filename: f.filename, dataUrl: f.dataUrl, bytes: new Uint8Array(f.bytes), sha256: f.sha256
+        }));
+        renderPhotoPreviews();
+        document.querySelector('nav.tabs button[data-tab="tab-reg"]').click();
+        toast("Cargado para edición: " + m.codigo_muestra);
+      });
+      div.querySelector("[data-del]").addEventListener("click", async () => {
+        if (!confirm(`¿Eliminar muestra ${m.codigo_muestra}?`)) return;
+        await dbDelete("muestras", m.codigo_muestra);
+        await refreshCounters();
+        await refreshList();
+      });
+      box.appendChild(div);
+    }
+
+    for (const c of cFiltered) {
+      const div = document.createElement("div");
+      div.className = "record-card";
+      const badge = c.exportado ? '<span class="pill pill-ok">Exportado</span>' : '<span class="pill pill-warn">Pendiente</span>';
+      div.innerHTML = `
+        <div class="record-head">
+          <strong>[CUSTODIA ${c.id.slice(0,8)}] ${c.codigo_muestra} · ${c.evento}</strong> ${badge}
+        </div>
+        <div class="record-meta">
+          ${c.ubicacion_origen} &rarr; ${c.ubicacion_destino} · ${c.operador} · ${c.ts_origen_utc}<br>
+          ${c.observaciones || ""}
+        </div>
+        <div class="actions-inline">
+          <button class="btn btn-err btn-sm" data-delc="${c.id}">Eliminar</button>
+        </div>
+      `;
+      div.querySelector("[data-delc]").addEventListener("click", async () => {
+        if (!confirm(`¿Eliminar evento custodia ${c.id.slice(0,8)}?`)) return;
+        await dbDelete("custodia", c.id);
+        await refreshCounters();
+        await refreshList();
+      });
+      box.appendChild(div);
+    }
+  }
+
+  document.getElementById("filter-status").addEventListener("change", refreshList);
+  let _filterTimer;
+  document.getElementById("filter-q").addEventListener("input", () => {
+    clearTimeout(_filterTimer);
+    _filterTimer = setTimeout(refreshList, 300);
+  });
+
+  // ------------------------------------------------------------
+  // 8. Exportación ZIP Estándar + Manifest SHA-256
+  // ------------------------------------------------------------
+  async function refreshExportSummary() {
+    const [m, c] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const totalFotos = m.reduce((s, r) => s + (r.fotos ? r.fotos.length : 0), 0);
+    const totalBytes = m.reduce((s, r) => s + (r.fotos || []).reduce((k, f) => k + f.bytes.length, 0), 0);
+    document.getElementById("export-summary").innerHTML = `
+      <ul>
+        <li><b>Muestras guardadas:</b> ${m.length} (${m.filter(x => !x.exportado).length} pendientes)</li>
+        <li><b>Eventos de custodia:</b> ${c.length} (${c.filter(x => !x.exportado).length} pendientes)</li>
+        <li><b>Fotografías comprimidas (&le;1600px):</b> ${totalFotos} (~${(totalBytes / 1048576).toFixed(2)} MB)</li>
+      </ul>
+    `;
+  }
+
+  function triggerDownload(blob, filename) {
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+  }
+
+  document.getElementById("btn-export-zip").addEventListener("click", async () => {
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    if (!muestras.length && !custodias.length) {
+      toast("No hay datos para exportar.");
+      return;
+    }
+
+    const enc = new TextEncoder();
+    const mHeaders = [
+      "codigo_muestra","parent_codigo","localidad","litologia","cantera_empresa","frente_cantera",
+      "tipo_fisico","num_sacos","masa_kg","lat_wgs84","lon_wgs84","alt_m","gps_precision_m",
+      "litologia_notas","operador","origen_registro","ts_origen_utc","fotos_archivos","fotos_sha256"
+    ];
+    const mRows = muestras.map(m => ({
+      ...m,
+      fotos_archivos: (m.fotos || []).map(f => "fotos/" + f.filename).join(";"),
+      fotos_sha256: (m.fotos || []).map(f => f.sha256).join(";")
+    }));
+    const mCsvBytes = enc.encode(toCsv(mHeaders, mRows));
+
+    const cHeaders = [
+      "custodia_local_id","codigo_muestra","evento","ubicacion_origen","ubicacion_destino",
+      "operador","origen_registro","ts_origen_utc","observaciones"
+    ];
+    const cRows = custodias.map(c => ({ ...c, custodia_local_id: c.id }));
+    const cCsvBytes = enc.encode(toCsv(cHeaders, cRows));
+
+    const zipEntries = [
+      { name: "amostras.csv", data: mCsvBytes },
+      { name: "custodia.csv", data: cCsvBytes }
+    ];
+    const manifestFiles = [
+      { path: "amostras.csv", bytes: mCsvBytes.length, sha256: await sha256Hex(mCsvBytes) },
+      { path: "custodia.csv", bytes: cCsvBytes.length, sha256: await sha256Hex(cCsvBytes) }
+    ];
+
+    for (const m of muestras) {
+      for (const f of (m.fotos || [])) {
+        const u8 = new Uint8Array(f.bytes);
+        const rel = "fotos/" + f.filename;
+        zipEntries.push({ name: rel, data: u8 });
+        manifestFiles.push({ path: rel, bytes: u8.length, sha256: f.sha256 });
+      }
+    }
+
+    const tsStamp = nowUtcIso();
+    const manifest = {
+      schema: "fapesp_c1_campo_zip_v1",
+      exported_at_utc: tsStamp,
+      total_amostras: muestras.length,
+      total_custodia: custodias.length,
+      total_fotos: manifestFiles.length - 2,
+      archivos: manifestFiles
+    };
+    const manBytes = enc.encode(JSON.stringify(manifest, null, 2));
+    zipEntries.push({ name: "manifest_sha256.json", data: manBytes });
+
+    const zipBlob = buildZipBlob(zipEntries);
+    const rnd = Math.random().toString(36).slice(2, 8);
+    const fname = `LS_Campo_${tsStamp.slice(0,16).replace(/[:T]/g, "-")}_${rnd}.zip`;
+    triggerDownload(zipBlob, fname);
+
+    // Marcar como exportados DESPUES de que el download se haya disparado
+    // Si la app crashea antes de este punto, los registros siguen como pendientes
+    // y el usuario puede re-exportar sin perder datos.
+    try {
+      for (const m of muestras) { m.exportado = true; await dbPut("muestras", m); }
+      for (const c of custodias) { c.exportado = true; await dbPut("custodia", c); }
+    } catch (dbErr) {
+      toast("ZIP descargado pero error al marcar como exportados: " + dbErr.message, 4000);
+      return;
+    }
+    await refreshExportSummary();
+    toast("ZIP generado: " + fname);
+  });
+
+  document.getElementById("btn-export-json").addEventListener("click", async () => {
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const payload = { schema: "fapesp_c1_raw_backup_v1", exported_at_utc: nowUtcIso(), muestras, custodias };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    triggerDownload(blob, `LS_Respaldo_${nowUtcIso().slice(0,10)}.json`);
+  });
+
+  document.getElementById("btn-clear-exported").addEventListener("click", async () => {
+    if (!confirm("¿Eliminar del teléfono los registros que ya fueron marcados como Exportados?")) return;
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    for (const m of muestras) if (m.exportado) await dbDelete("muestras", m.codigo_muestra);
+    for (const c of custodias) if (c.exportado) await dbDelete("custodia", c.id);
+    await refreshCounters();
+    await refreshExportSummary();
+    toast("Registros exportados limpiados.");
+  });
+
+  document.getElementById("btn-clear-all").addEventListener("click", async () => {
+    if (!confirm("ATENCIÓN: Se borrarán TODOS los datos y fotos guardados localmente. ¿Continuar?")) return;
+    if (!confirm("Última confirmación: ¿Ya verificaste el ZIP en tu PC?")) return;
+    await dbClear("muestras");
+    await dbClear("custodia");
+    await refreshCounters();
+    await refreshExportSummary();
+    toast("Memoria local vaciada.");
+  });
+
+  // ------------------------------------------------------------
+  // 9. PRELOAD + Diagnóstico
+  // ------------------------------------------------------------
+  async function renderPreloadDropdown() {
+    const items = await dbGetAll("preload");
+    const sel = document.getElementById("f-preload-sel");
+    const wrap = document.getElementById("preload-picker-wrap");
+    const stats = document.getElementById("preload-stats");
+    sel.innerHTML = '<option value="">-- Seleccionar del lote PRELOAD --</option>';
+    if (!items.length) {
+      wrap.classList.add("hidden");
+      stats.textContent = "Sin catálogo PRELOAD cargado.";
+      return;
+    }
+    wrap.classList.remove("hidden");
+    items.sort((a, b) => a.codigo_muestra.localeCompare(b.codigo_muestra)).forEach(it => {
+      const opt = document.createElement("option");
+      opt.value = it.codigo_muestra;
+      opt.textContent = `${it.codigo_muestra} (${it.localidad}/${it.litologia})`;
+      sel.appendChild(opt);
+    });
+    stats.textContent = `Catálogo PRELOAD activo: ${items.length} códigos disponibles offline.`;
+  }
+
+  document.getElementById("inp-preload").addEventListener("change", async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const text = await file.text();
+    let rows = [];
+    if (file.name.toLowerCase().endsWith(".json")) {
+      try {
+        const parsed = JSON.parse(text);
+        rows = parsed.items || parsed;
+      } catch (jsonErr) {
+        toast("PRELOAD JSON invalido: " + jsonErr.message, 3500);
+        e.target.value = "";
+        return;
+      }
+    } else {
+      const lines = text.trim().split(/\r?\n/);
+      const hdr = lines[0].replace(/^\uFEFF/, "").split(",").map(s => s.trim());
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(",");
+        const obj = {};
+        hdr.forEach((h, idx) => { obj[h] = (cols[idx] || "").trim(); });
+        if (obj.codigo_muestra) rows.push(obj);
+      }
+    }
+    await dbClear("preload");
+    for (const r of rows) {
+      if (r.codigo_muestra) await dbPut("preload", r);
+    }
+    await renderPreloadDropdown();
+    toast(`PRELOAD cargado: ${rows.length} códigos`);
+    e.target.value = "";
+  });
+
+  function refreshDiagnostics() {
+    const swStatus = ("serviceWorker" in navigator)
+      ? (navigator.serviceWorker.controller ? "ACTIVO (offline listo)" : "Registrado (recarga para activar)")
+      : (location.protocol === "file:" ? "No disponible en file://" : "No soportado");
+    const items = [
+      `Protocolo:       ${location.protocol}`,
+      `SecureContext:   ${window.isSecureContext}`,
+      `ServiceWorker:   ${swStatus}`,
+      `IndexedDB:       ${"indexedDB" in window}`,
+      `Geolocation:     ${"geolocation" in navigator}`,
+      `getUserMedia:    ${!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)}`,
+      `BarcodeDetector: ${"BarcodeDetector" in window} (nativo Android/Chrome)`,
+      `jsQR fallback:   ${typeof jsQR === "function"} (iOS Safari/Firefox)`,
+      `Web NFC:         ${"NDEFReader" in window} (futuro Sprint 4+)`,
+      `WebCrypto SHA:   ${!!(window.crypto && window.crypto.subtle)} (Fallback JS puro: SI)`
+    ];
+    document.getElementById("diag-box").textContent = items.join("\n");
+  }
+
+  // Service Worker — registro para offline real (requiere HTTP/HTTPS, no file://)
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+
+  // Advertencia si se abre como file:// — GPS y camara no funcionaran
+  if (location.protocol === "file:") {
+    toast("Modo file:// — GPS y camara limitados. Para full funcionalidad: python -m http.server 8080", 5000);
+  }
+
+  // Bootstrap
+  openDb().then(async () => {
+    updateOnlinePill();
+    // Restaurar operador desde localStorage (evita hardcodeo)
+    const savedOp = localStorage.getItem("ls_c1_operador");
+    if (savedOp) document.getElementById("f-operador").value = savedOp;
+    await refreshCounters();
+    await renderPreloadDropdown();
+    refreshDiagnostics();
+  }).catch(err => {
+    alert("Error inicializando IndexedDB: " + err.message);
+  });
+})();
+</script>
+</body>
+</html>
