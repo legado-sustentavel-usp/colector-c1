@@ -77,6 +77,18 @@
   .pend a, .pend button { margin-left: auto; color: var(--primary); font-weight: 600; text-decoration: none; white-space: nowrap; background: none; border: none; cursor: pointer; font: inherit; }
   .pend i { width: 8px; height: 8px; border-radius: 2px; background: var(--warn); flex-shrink: 0; }
 
+  /* ===== Banner de instalacion PWA ===== */
+  .install-banner { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--primary-soft); border-bottom: 1px solid var(--line); font-size: 13px; line-height: 18px; color: var(--primary-soft-ink); }
+  .install-banner svg { width: 28px; height: 28px; flex-shrink: 0; color: var(--primary); }
+  .install-banner .ib-text { flex: 1; min-width: 0; }
+  .install-banner .ib-text b { display: block; font-size: 14px; color: var(--ink); }
+  .install-banner .ib-text span { font-size: 12px; color: var(--muted); }
+  .install-banner .ib-btn { flex-shrink: 0; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--primary); color: var(--on-primary); font-size: 13px; font-weight: 600; border: none; cursor: pointer; white-space: nowrap; min-height: var(--touch-phone); }
+  .install-banner .ib-close { all: unset; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-sm); color: var(--muted); cursor: pointer; flex-shrink: 0; font-size: 18px; }
+  .install-ios-steps { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .install-ios-steps li { display: flex; align-items: center; gap: 6px; }
+  .install-ios-steps li b { color: var(--ink); }
+
   /* ===== Contenido principal ===== */
   .main { flex: 1; padding: 16px 16px 180px; display: grid; gap: 16px; align-content: start; max-width: 500px; margin: 0 auto; }
   .tab-panel { display: none; }
@@ -295,6 +307,22 @@
   <i></i>
   <span><b id="pending-count">0</b> registros guardados en el teléfono, sin enviar</span>
   <button type="button" id="pending-link">Enviar &rarr;</button>
+</div>
+
+<!-- ===== BANNER INSTALACION PWA ===== -->
+<div id="install-banner" class="install-banner hidden">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 12-4-4m4 4 4-4"/><path d="M2 17v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2"/></svg>
+  <div class="ib-text">
+    <b id="install-title">Instalar en tu celular</b>
+    <span id="install-subtitle">Funciona sin internet, como una app nativa</span>
+    <ol id="install-ios-steps" class="install-ios-steps hidden">
+      <li><b>1.</b> Toca el boton <b>Compartir</b> (cuadro con flecha) abajo</li>
+      <li><b>2.</b> Busca <b>"Agregar a pantalla de inicio"</b></li>
+      <li><b>3.</b> Toca <b>Agregar</b> y listo</li>
+    </ol>
+  </div>
+  <button type="button" id="install-btn" class="ib-btn">Instalar</button>
+  <button type="button" id="install-close" class="ib-close" aria-label="Cerrar">&times;</button>
 </div>
 
 <!-- ===== SETTINGS OVERLAY ===== -->
@@ -2275,6 +2303,77 @@
   if (location.protocol === "file:") {
     toast("Modo file:// — GPS y camara limitados. Para full: python -m http.server 8080", 5000);
   }
+
+  // ============================================================
+  // 23b. PWA Install Banner
+  // ============================================================
+  (() => {
+    const banner = document.getElementById("install-banner");
+    const btnInstall = document.getElementById("install-btn");
+    const btnClose = document.getElementById("install-close");
+    const iosSteps = document.getElementById("install-ios-steps");
+    const DISMISS_KEY = "ls_c1_install_dismissed";
+    const DISMISS_DAYS = 7; // vuelve a mostrar despues de 7 dias
+
+    // Si ya esta instalada como PWA standalone, no mostrar nunca
+    if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone) return;
+
+    // Si el usuario cerro el banner recientemente, no mostrar
+    const dismissed = localStorage.getItem(DISMISS_KEY);
+    if (dismissed) {
+      const daysAgo = (Date.now() - parseInt(dismissed, 10)) / 86400000;
+      if (daysAgo < DISMISS_DAYS) return;
+    }
+
+    let deferredPrompt = null;
+
+    // Detectar iOS (Safari)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isSafari = isIOS && !navigator.userAgent.match(/CriOS|FxiOS|OPiOS|EdgiOS/);
+
+    // Android / Chrome: interceptar beforeinstallprompt
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      banner.classList.remove("hidden");
+      btnInstall.style.display = "";
+      iosSteps.classList.add("hidden");
+    });
+
+    // iOS Safari: mostrar instrucciones manuales
+    if (isIOS && isSafari) {
+      document.getElementById("install-title").textContent = "Agregar a pantalla de inicio";
+      document.getElementById("install-subtitle").textContent = "Para usar como app offline:";
+      iosSteps.classList.remove("hidden");
+      btnInstall.style.display = "none";
+      banner.classList.remove("hidden");
+    }
+
+    // Boton Instalar (Android/Chrome)
+    btnInstall.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const result = await deferredPrompt.userChoice;
+      if (result.outcome === "accepted") {
+        banner.classList.add("hidden");
+        toast("App instalada en tu celular");
+      }
+      deferredPrompt = null;
+    });
+
+    // Boton cerrar
+    btnClose.addEventListener("click", () => {
+      banner.classList.add("hidden");
+      localStorage.setItem(DISMISS_KEY, String(Date.now()));
+    });
+
+    // Si se instala desde el navegador directamente
+    window.addEventListener("appinstalled", () => {
+      banner.classList.add("hidden");
+      deferredPrompt = null;
+      toast("App instalada en tu celular");
+    });
+  })();
 
   // ============================================================
   // 24. Bootstrap
