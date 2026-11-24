@@ -2,464 +2,669 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<title>Colector Campo &amp; Custodia C1 · FAPESP 2026/26432-4</title>
+<title>Colector de Campo C1 · FAPESP 2026/26432-4</title>
 <style>
+  /* ===== Tokens del Sistema Legado (offline — copiar de legado-tokens.css si cambian) ===== */
   :root {
-    --bg: #f0f4f8;
-    --card: #ffffff;
-    --ink: #0f172a;
-    --muted: #475569;
-    --line: #cbd5e1;
-    --primary: #1d4ed8;
-    --primary-light: #dbeafe;
-    --primary-ink: #ffffff;
-    --ok: #15803d;
-    --ok-light: #dcfce7;
-    --warn: #b45309;
-    --warn-light: #fef3c7;
-    --err: #b91c1c;
-    --dark: #0f172a;
-    --accent: #2563eb;
-    --shadow-sm: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
-    --shadow-md: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
-    --radius: 12px;
-    --transition: 0.2s ease;
+    --bg: #f1f5f9; --surface: #ffffff; --surface-2: #f8fafc; --ink: #0f172a; --muted: #475569; --line: #cbd5e1;
+    --brand: #0f172a; --on-brand: #f8fafc;
+    --primary: #1e3a8a; --primary-hover: #1e40af; --on-primary: #ffffff; --primary-soft: #dbeafe; --primary-soft-ink: #1d4ed8; --focus: #2563eb;
+    --ok: #15803d; --ok-soft: #dcfce7; --warn: #b45309; --warn-soft: #fef3c7; --err: #b91c1c; --err-soft: #fee2e2;
+    --origin-op: #0e7490; --origin-cb: #9a3412;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px;
+    --radius-sm: 6px; --radius-md: 10px; --radius-pill: 999px; --touch-phone: 44px;
+    --shadow-card: 0 1px 2px rgba(15,23,42,0.06);
+    --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+    --card: var(--surface); --dark: var(--ink); --primary-light: var(--primary-soft); --primary-ink: var(--on-primary);
+    --ok-light: var(--ok-soft); --warn-light: var(--warn-soft); --accent: var(--primary); --radius: var(--radius-md);
+    --transition: 0.15s ease;
+    color-scheme: light;
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --surface: #111a2e; --surface-2: #172238; --ink: #e2e8f0; --muted: #94a3b8; --line: #26334d;
+      --brand: #060b16; --on-brand: #f8fafc;
+      --primary: #8ab4ff; --primary-hover: #a9c7ff; --on-primary: #0b1220; --primary-soft: #13254a; --primary-soft-ink: #93c5fd; --focus: #8ab4ff;
+      --ok: #4ade80; --ok-soft: #11291c; --warn: #fbbf24; --warn-soft: #2a1e08; --err: #f87171; --err-soft: #2e1214;
+      --origin-op: #22d3ee; --origin-cb: #fb923c;
+      --shadow-card: none;
+      color-scheme: dark;
+    }
+  }
+
+  /* ===== Reset & Base ===== */
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
-    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background: var(--bg); color: var(--ink); line-height: 1.4; padding-bottom: 0;
-  }
-  header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 30;
-    border-bottom: 3px solid var(--accent);
-    box-shadow: 0 2px 12px rgba(15,23,42,0.3);
-  }
-  .hdr-brand { display: flex; align-items: center; gap: 12px; }
-  .hdr-logo {
-    width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25);
-    object-fit: cover; flex-shrink: 0; background: #fff;
-  }
-  header h1 { margin: 0; font-size: 1rem; letter-spacing: 0.3px; font-weight: 800; }
-  .subhead { font-size: 0.72rem; color: #94a3b8; display: flex; justify-content: space-between; gap: 8px; margin-top: 2px; flex-wrap: wrap; letter-spacing: 0.2px; }
-  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3px; }
-  .pill-ok { background: #dcfce7; color: #166534; }
-  .pill-warn { background: #fef3c7; color: #92400e; }
-  .pill-err { background: #fee2e2; color: #991b1b; }
-  .pill-dark { background: #334155; color: #f8fafc; }
-
-  nav.tabs {
-    display: grid; grid-template-columns: repeat(4, 1fr); background: #e2e8f0;
-    border-bottom: 1px solid var(--line);
-    position: sticky; top: 68px; z-index: 25;
-    box-shadow: 0 2px 6px rgba(15,23,42,0.06);
-  }
-  nav.tabs button {
-    border: none; background: transparent; padding: 12px 4px; font-weight: 700; font-size: 0.78rem;
-    color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer;
-    transition: all var(--transition);
-  }
-  nav.tabs button:hover { background: rgba(29,78,216,0.04); }
-  nav.tabs button.active { background: #fff; color: var(--primary); border-bottom-color: var(--primary); }
-
-  main { max-width: 760px; margin: 0 auto; padding: 12px; }
-  section.tab-panel { display: none; animation: fadeIn 0.25s ease; }
-  section.tab-panel.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
-    transition: box-shadow var(--transition);
-  }
-  .card:hover { box-shadow: var(--shadow-md); }
-  .card h2 {
-    margin: 0 0 10px 0; font-size: 0.92rem; color: var(--dark);
-    border-bottom: 2px solid var(--accent); padding-bottom: 6px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  label { display: block; font-size: 0.8rem; font-weight: 700; color: #334155; margin: 8px 0 3px; }
-  input, select, textarea {
-    width: 100%; padding: 10px; border: 1.5px solid #94a3b8; border-radius: 8px;
-    font-size: 0.95rem; background: #fff; color: var(--ink); font-family: inherit;
-    transition: border-color var(--transition), box-shadow var(--transition);
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(29,78,216,0.12);
-  }
-  textarea { min-height: 62px; resize: vertical; }
-
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-  @media (max-width: 460px) { .row3 { grid-template-columns: 1fr 1fr; } }
-
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    width: 100%; padding: 12px 14px; border: none; border-radius: 10px;
-    font-size: 0.93rem; font-weight: 700; cursor: pointer; margin-top: 8px;
-    transition: all var(--transition); position: relative; overflow: hidden;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: linear-gradient(135deg, #1d4ed8, #2563eb); color: var(--primary-ink); box-shadow: 0 2px 8px rgba(29,78,216,0.3); }
-  .btn-primary:hover { box-shadow: 0 4px 14px rgba(29,78,216,0.4); }
-  .btn-dark { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; box-shadow: 0 2px 8px rgba(15,23,42,0.25); }
-  .btn-dark:hover { box-shadow: 0 4px 14px rgba(15,23,42,0.35); }
-  .btn-ok { background: linear-gradient(135deg, #15803d, #16a34a); color: #fff; box-shadow: 0 2px 8px rgba(21,128,61,0.3); }
-  .btn-ok:hover { box-shadow: 0 4px 14px rgba(21,128,61,0.4); }
-  .btn-warn { background: linear-gradient(135deg, #b45309, #d97706); color: #fff; }
-  .btn-err { background: linear-gradient(135deg, #991b1b, #dc2626); color: #fff; }
-  .btn-outline { background: #f8fafc; color: var(--ink); border: 1.5px solid #94a3b8; }
-  .btn-outline:hover { background: #e2e8f0; border-color: #64748b; }
-  .btn-sm { padding: 7px 10px; font-size: 0.82rem; margin-top: 4px; width: auto; }
-
-  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
-  .seg button {
-    padding: 10px 6px; border: 1.5px solid #94a3b8; border-radius: 10px; background: #f8fafc;
-    font-weight: 700; font-size: 0.86rem; cursor: pointer; color: var(--ink);
-    transition: all var(--transition);
-  }
-  .seg button:hover { background: #e2e8f0; }
-  .seg button.active { background: var(--primary-light); border-color: var(--primary); color: #1e3a8a; box-shadow: 0 0 0 1px var(--primary); }
-
-  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-  .chip {
-    padding: 8px 12px; border: 1.5px solid #94a3b8; border-radius: 999px; background: #f8fafc;
-    font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all var(--transition);
-  }
-  .chip:hover { background: #e2e8f0; }
-  .chip.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 2px 6px rgba(15,23,42,0.2); }
-
-  #qr-scanner-box {
-    display: none; margin-top: 8px; border: 2px solid var(--primary); border-radius: var(--radius); overflow: hidden; background: #000;
-    box-shadow: 0 4px 16px rgba(29,78,216,0.2);
-  }
-  #qr-video { width: 100%; max-height: 260px; object-fit: cover; display: block; }
-
-  .photo-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-top: 8px; }
-  .photo-item {
-    border: 1px solid var(--line); border-radius: 10px; padding: 5px; background: #f8fafc;
-    font-size: 0.72rem; transition: box-shadow var(--transition);
-  }
-  .photo-item:hover { box-shadow: var(--shadow-md); }
-  .photo-item img { width: 100%; height: 90px; object-fit: cover; border-radius: 7px; display: block; }
-  .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; word-break: break-all; }
-
-  .record-card {
-    border: 1.5px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
-    background: #fff; box-shadow: var(--shadow-sm); transition: box-shadow var(--transition);
-  }
-  .record-card:hover { box-shadow: var(--shadow-md); }
-  .record-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .record-meta { font-size: 0.78rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-  .actions-inline { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-
-  #toast {
-    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(0);
-    background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; padding: 12px 20px; border-radius: 12px;
-    font-weight: 700; font-size: 0.84rem; z-index: 99; display: none; max-width: 90vw; text-align: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  footer.institutional {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: #94a3b8; padding: 16px; text-align: center; font-size: 0.72rem; line-height: 1.6;
-    border-top: 2px solid var(--accent);
-  }
-  footer.institutional .ft-logos { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 8px; }
-  footer.institutional .ft-logo { height: 32px; opacity: 0.85; }
-  footer.institutional a { color: #93c5fd; text-decoration: none; }
-  footer.institutional strong { color: #e2e8f0; }
-
+  body { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 22px; background: var(--bg); color: var(--ink); overflow-y: auto; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
   .hidden { display: none !important; }
+  .mono { font-family: var(--font-mono); word-break: break-all; }
+
+  /* ===== Cabecera ===== */
+  .ch { background: var(--brand); color: var(--on-brand); padding: 12px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 30; }
+  .ch-t { min-width: 0; flex: 1; }
+  /* Logos institucionales (negativo, incrustados para funcionar sin internet) */
+  .ch { gap: 10px; }
+  .ch-logos { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .ch-logos img { display: block; width: auto; }
+  .ch-logos img:first-child { height: 20px; }
+  .ch-logos img:last-child { height: 22px; }
+  .ch-sep { width: 1px; height: 24px; flex-shrink: 0; background: color-mix(in srgb, var(--on-brand) 22%, var(--brand)); }
+  .ch-t span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ch .gear { width: 36px; height: 36px; margin-right: -6px; }
+  /* Pie institucional (Enviar y Ajustes) */
+  .inst { display: grid; justify-items: center; gap: 8px; margin-top: 24px; padding: 16px 8px 4px; border-top: 1px solid var(--line); text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .inst b { color: var(--ink); }
+  .inst-logos { display: flex; align-items: center; gap: 12px; }
+  .inst-logos img { display: block; width: auto; height: 22px; filter: brightness(0); opacity: .85; }
+  @media (prefers-color-scheme: dark) { .inst-logos img { filter: brightness(0) invert(1); } }
+  .ch-t b { display: block; font-size: 16px; line-height: 20px; }
+  .ch-t span { display: block; font-size: 12px; line-height: 16px; color: color-mix(in srgb, var(--on-brand) 62%, var(--brand)); }
+  .net { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--warn) 26%, var(--brand)); color: var(--on-brand); white-space: nowrap; }
+  .net.on { background: color-mix(in srgb, var(--ok) 26%, var(--brand)); }
+  .net svg { width: 12px; height: 12px; }
+  .gear { all: unset; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-sm); color: color-mix(in srgb, var(--on-brand) 80%, var(--brand)); cursor: pointer; }
+  .gear svg { width: 20px; height: 20px; }
+
+  /* ===== Aviso de pendientes ===== */
+  .pend { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--line); font-size: 13px; line-height: 18px; color: var(--ink); }
+  .pend b { font-variant-numeric: tabular-nums; }
+  .pend a, .pend button { margin-left: auto; color: var(--primary); font-weight: 600; text-decoration: none; white-space: nowrap; background: none; border: none; cursor: pointer; font: inherit; }
+  .pend i { width: 8px; height: 8px; border-radius: 2px; background: var(--warn); flex-shrink: 0; }
+
+  /* ===== Contenido principal ===== */
+  .main { flex: 1; padding: 16px 16px 180px; display: grid; gap: 16px; align-content: start; max-width: 500px; margin: 0 auto; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== Tipografía ===== */
+  .kick { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .h { margin: 2px 0 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: -.01em; }
+  .lbl { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .help { font-size: 13px; line-height: 18px; color: var(--muted); margin: 8px 0 0; }
+
+  /* ===== Selector de tipo (modo) ===== */
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .seg button { all: unset; box-sizing: border-box; display: grid; gap: 2px; padding: 10px 12px; min-height: 56px; border-radius: var(--radius-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: 14px; line-height: 18px; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .seg button span { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .seg button.on { background: var(--ink); color: var(--surface); box-shadow: none; }
+  .seg button.on span { color: color-mix(in srgb, var(--surface) 70%, var(--ink)); }
+
+  /* ===== Stepper vertical (pasos) ===== */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .st { position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 12px; padding-bottom: 12px; }
+  .st::before { content: ""; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--line); }
+  .st:last-child::before { display: none; }
+  .st.done::before { background: var(--ink); }
+  .dot { position: relative; z-index: 1; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-sm); font: 700 13px/1 var(--font-mono); background: var(--surface); color: var(--muted); box-shadow: inset 0 0 0 2px var(--line); cursor: pointer; }
+  .st.done .dot { background: var(--ink); color: var(--surface); box-shadow: none; }
+  .st.cur .dot { background: var(--primary); color: var(--on-primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+  .st.miss .dot { background: var(--warn-soft); color: var(--warn); box-shadow: inset 0 0 0 2px var(--warn); }
+  .dot svg { width: 16px; height: 16px; }
+  .st-h { display: flex; align-items: center; gap: 8px; min-height: 32px; cursor: pointer; }
+  .st-h b { font-size: 15px; line-height: 20px; }
+  .st-h .tag { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .st-h a { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--primary); text-decoration: none; }
+  .st-sum { font-size: 13px; line-height: 18px; color: var(--muted); margin-top: -2px; }
+  .st-sum .mono { color: var(--ink); font-size: 13px; }
+  .st:not(.done):not(.cur) .st-h b { color: var(--muted); font-weight: 500; }
+
+  /* ===== Panel de paso ===== */
+  .panel { margin-top: 8px; background: var(--surface); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); padding: 16px; display: grid; gap: 12px; }
+
+  /* ===== Formularios ===== */
+  label { display: block; font-size: 12px; line-height: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 4px 0 4px; }
+  input, select, textarea { width: 100%; min-height: var(--touch-phone); padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); font: 400 16px/20px var(--font-sans); background: var(--surface); color: var(--ink); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--focus); }
+  textarea { min-height: 72px; resize: vertical; }
+
+  /* ===== Botones ===== */
+  .btn { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-align: center; cursor: pointer; }
+  .btn svg { width: 18px; height: 18px; }
+  .btn.pri { background: var(--primary); color: var(--on-primary); }
+  .btn.dark { background: var(--ink); color: var(--surface); }
+  .btn.sec { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+  .btn.ok { background: var(--ok); color: var(--surface); }
+  .btn.ghost { min-height: 40px; color: var(--primary); font-size: 14px; }
+  .btn.dis { background: var(--surface-2); color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); pointer-events: none; }
+  .btn.warn-btn { background: var(--warn-soft); color: var(--warn); box-shadow: inset 0 0 0 1px var(--warn); }
+  .btn.err-btn { background: var(--err-soft); color: var(--err); box-shadow: inset 0 0 0 1px var(--err); }
+  .btn-sm { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+
+  /* ===== GPS ===== */
+  .gps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; padding: 12px; border-radius: var(--radius-sm); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+  .gps dt { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .gps dd { margin: 0; font: 600 15px/20px var(--font-mono); color: var(--ink); }
+  .qual { grid-column: 1/-1; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ok); }
+  .qual svg { width: 14px; height: 14px; }
+  .qual.warn-q { color: var(--warn); }
+  .qual.err-q { color: var(--err); }
+  .acc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; grid-column: 1/-1; }
+  .acc i { height: 6px; border-radius: 2px; background: var(--ok); }
+  .acc i.off { background: var(--line); }
+
+  /* ===== Chips ===== */
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .chip { all: unset; box-sizing: border-box; min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); font: 600 14px/18px var(--font-sans); color: var(--ink); cursor: pointer; }
+  .chip.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+
+  /* ===== Fotos ===== */
+  .photo-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 8px; }
+  .photo-item { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 4px; background: var(--surface-2); font-size: 11px; line-height: 14px; }
+  .photo-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 4px; display: block; }
+  .photo-item .mono { font-size: 10px; }
+
+  /* ===== QR Scanner ===== */
+  #qr-scanner-box { display: none; margin-top: 8px; border: 2px solid var(--primary); border-radius: var(--radius-md); overflow: hidden; background: #000; }
+  #qr-video { width: 100%; max-height: 220px; object-fit: cover; display: block; }
+
+  /* ===== Revision ===== */
+  .rev { background: var(--surface); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+  .rev-row { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 4px 10px; align-items: start; padding: 12px 14px; border-top: 1px solid var(--line); }
+  .rev-row:first-child { border-top: 0; }
+  .rev-row svg { width: 18px; height: 18px; margin-top: 1px; }
+  .rev-row .ok-ic { color: var(--ok); }
+  .rev-row .wn-ic { color: var(--warn); }
+  .rev-row b { font-size: 14px; }
+  .rev-row p { grid-column: 2/4; margin: 0; font-size: 13px; line-height: 18px; color: var(--muted); }
+  .rev-row a { font-size: 13px; font-weight: 600; color: var(--primary); text-decoration: none; cursor: pointer; }
+  .seal { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--primary-soft); color: var(--primary-soft-ink); font-size: 13px; line-height: 18px; }
+  .seal svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== Tarjetas (Guardados) ===== */
+  .grp-h { display: flex; align-items: baseline; justify-content: space-between; }
+  .card { background: var(--surface); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); padding: 14px; display: grid; gap: 10px; }
+  .card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .card-top .mono { font-size: 14px; font-weight: 600; }
+  .card-top small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .st-pill { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: var(--radius-sm); white-space: nowrap; }
+  .st-pill svg { width: 12px; height: 12px; }
+  .st-pill.wn { background: var(--warn-soft); color: var(--warn); }
+  .st-pill.ok-pill { background: var(--ok-soft); color: var(--ok); }
+  .chain { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; }
+  .chain i { height: 6px; border-radius: 2px; background: var(--line); }
+  .chain i.d { background: var(--ink); }
+  .chain-l { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+  .chain-l b { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .facts span { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 2px 8px; border-radius: var(--radius-sm); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); }
+  .card.sent { opacity: .75; }
+  .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ===== Enviar (flow) ===== */
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .flow li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; background: var(--surface); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); padding: 14px; }
+  .flow .dot { grid-row: span 3; }
+  .flow b { font-size: 15px; }
+  .flow p { margin: 0; font-size: 13px; line-height: 18px; color: var(--muted); }
+  .flow .btn { grid-column: 2; margin-top: 6px; }
+  .kpis { grid-column: 2; display: flex; gap: 16px; margin-top: 4px; }
+  .kpis div b { display: block; font-size: 20px; line-height: 24px; font-variant-numeric: tabular-nums; }
+  .kpis div span { font-size: 12px; color: var(--muted); }
+  .path { grid-column: 2; display: inline-flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .path span { padding: 2px 8px; border-radius: var(--radius-sm); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+  .danger { border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); padding: 12px 14px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); background: var(--surface); cursor: pointer; }
+  .danger svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .danger b { color: var(--ink); font-weight: 600; }
+
+  /* ===== Movimiento (Custodia) ===== */
+  .who { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); padding: 12px 14px; }
+  .who .mono { font-weight: 600; }
+  .who small { display: block; font-size: 12px; color: var(--muted); }
+  .opts { display: grid; gap: 8px; }
+  .opt { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 2px 10px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); cursor: pointer; }
+  .opt i { grid-row: span 2; width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--line); margin-top: 1px; }
+  .opt b { font-size: 14px; }
+  .opt span { font-size: 12px; line-height: 16px; color: var(--muted); }
+  .opt.on { box-shadow: inset 0 0 0 2px var(--primary); background: var(--primary-soft); }
+  .opt.on i { box-shadow: inset 0 0 0 6px var(--primary); }
+  .opt.on span { color: var(--primary-soft-ink); }
+  .opt input { display: none; }
+  .move { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+  .loc { padding: 10px 12px; border-radius: var(--radius-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+  .loc small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .loc b { font-size: 14px; }
+  .loc.auto { background: var(--surface-2); }
+  .move svg { width: 20px; height: 20px; color: var(--muted); }
+
+  /* ===== Settings overlay ===== */
+  #settings-overlay { position: fixed; inset: 0; z-index: 40; background: var(--bg); overflow-y: auto; padding: 0; }
+  .settings-hdr { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--brand); color: var(--on-brand); position: sticky; top: 0; z-index: 1; }
+  .settings-hdr b { font-size: 18px; }
+  .settings-hdr button { all: unset; font: 600 14px var(--font-sans); color: var(--on-brand); cursor: pointer; padding: 8px; }
+  .settings-body { padding: 16px; display: grid; gap: 16px; max-width: 500px; margin: 0 auto; }
+  .settings-body .card h3 { margin: 0 0 8px; font-size: 14px; }
+
+  /* ===== Barra inferior fija ===== */
+  .foot { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); box-shadow: 0 -1px 0 var(--line); z-index: 30; }
+  .act { padding: 12px 16px 8px; display: grid; gap: 6px; max-width: 500px; margin: 0 auto; }
+  .act-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+  .act-meta b { color: var(--warn); font-weight: 600; }
+  .prog { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .prog i { height: 4px; border-radius: 2px; background: var(--line); }
+  .prog i.d { background: var(--ink); }
+  .prog i.c { background: var(--primary); }
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); max-width: 500px; margin: 0 auto; }
+  .tabs button { all: unset; box-sizing: border-box; display: grid; justify-items: center; gap: 2px; padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px)); font-size: 12px; font-weight: 600; color: var(--muted); text-align: center; cursor: pointer; position: relative; }
+  .tabs button svg { width: 22px; height: 22px; }
+  .tabs button.on { color: var(--primary); }
+  .tabs button.on::before { content: ""; position: absolute; top: -1px; left: 25%; right: 25%; height: 3px; border-radius: 0 0 2px 2px; background: var(--primary); }
+  .tabs .badge { position: absolute; top: 4px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--warn); color: var(--surface); font: 700 11px/18px var(--font-sans); }
+
+  /* ===== Pill ===== */
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+  .pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill-ok { background: var(--ok-soft); color: var(--ok); }
+  .pill-warn { background: var(--warn-soft); color: var(--warn); }
+  .pill-err { background: var(--err-soft); color: var(--err); }
+
+  /* ===== Toast ===== */
+  #toast { position: fixed; left: 50%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 12px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 14px; z-index: 99; display: none; max-width: 90vw; text-align: center; }
+
+  /* ===== Success screen ===== */
+  .success-box { text-align: center; padding: 48px 16px 24px; }
+  .success-box .ico { width: 64px; height: 64px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; margin: 0 auto 16px; }
+  .success-box .ico svg { width: 32px; height: 32px; }
+  .success-box h2 { margin: 0 0 4px; font-size: 18px; }
+  .success-box p { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .success-box .btns { display: grid; gap: 8px; }
+
+  /* ===== Responsive ===== */
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 <script src="jsQR.min.js"></script>
 </head>
 <body>
 
-<header>
-  <div class="hdr-brand">
-    <img class="hdr-logo" alt="Poli-USP" src="data:image/jpeg;base64,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">
-    <div>
-      <h1>Colector C1 · Legado Sustentável</h1>
-      <div class="subhead">
-        <span>FAPESP 2026/26432-4 · Escola Politécnica da USP · PMI</span>
-        <span id="hdr-net" class="pill pill-dark">Verificando...</span>
-      </div>
-    </div>
-  </div>
+<!-- ===== CABECERA ===== -->
+<header class="ch">
+  <span class="ch-logos"><img src="data:image/png;base64,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" alt="USP" width="49" height="20"><img src="data:image/png;base64,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" alt="Escola Politécnica" width="25" height="22"></span>
+  <span class="ch-sep" aria-hidden="true"></span>
+  <div class="ch-t"><b>Colector C1</b><span>Legado Sustentável</span></div>
+  <span id="hdr-net" class="net"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="1" y1="1" x2="23" y2="23"/><path d="M8.5 16.4a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M10.7 5.1A15 15 0 0 1 22 8.8"/></svg>Verificando...</span>
+  <button type="button" id="gear-btn" class="gear" aria-label="Ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 </header>
 
-<nav class="tabs">
-  <button class="active" data-tab="tab-reg">1. Registrar</button>
-  <button data-tab="tab-list">2. Guardados (<span id="cnt-total">0</span>)</button>
-  <button data-tab="tab-exp">3. Exportar ZIP</button>
-  <button data-tab="tab-cfg">4. Preload/Diag</button>
-</nav>
+<!-- ===== AVISO PENDIENTES ===== -->
+<div id="pending-banner" class="pend hidden">
+  <i></i>
+  <span><b id="pending-count">0</b> registros guardados en el teléfono, sin enviar</span>
+  <button type="button" id="pending-link">Enviar &rarr;</button>
+</div>
 
-<main>
-  <!-- TAB 1: REGISTRO -->
+<!-- ===== SETTINGS OVERLAY ===== -->
+<div id="settings-overlay" class="hidden">
+  <div class="settings-hdr"><b>Ajustes</b><button type="button" id="settings-close">Cerrar</button></div>
+  <div class="settings-body">
+    <div class="card">
+      <h3>Operador</h3>
+      <p class="help" style="margin:0 0 8px">Se guarda y se usa en todos los registros.</p>
+      <input id="f-operador" type="text" placeholder="Nombre del operador">
+    </div>
+    <div class="card">
+      <h3>Origen del registro</h3>
+      <select id="f-origen-reg">
+        <option value="CAMPO_PWA">CAMPO_PWA (Directo en celular)</option>
+        <option value="CONTINGENCIA_PAPEL">CONTINGENCIA_PAPEL (Transcrito)</option>
+        <option value="LAB_WEB">LAB_WEB (Recepcion/Cuarteo)</option>
+      </select>
+    </div>
+    <div class="card">
+      <h3>Cargar catalogo PRELOAD</h3>
+      <p class="help" style="margin:0 0 8px">Archivo <code>*_preload.json</code> o <code>.csv</code> para seleccionar codigos sin digitar.</p>
+      <label class="btn dark" style="cursor:pointer;width:100%">
+        Seleccionar archivo
+        <input id="inp-preload" type="file" accept=".json,.csv" class="hidden">
+      </label>
+      <div id="preload-stats" style="font-size:13px;color:var(--muted);margin-top:8px">Sin catalogo PRELOAD cargado.</div>
+    </div>
+    <div class="card">
+      <h3>Diagnostico</h3>
+      <div id="diag-box" class="mono" style="font-size:12px;white-space:pre-wrap;color:var(--muted)"></div>
+    </div>
+    <div class="card">
+      <h3>Mantenimiento</h3>
+      <button type="button" id="btn-clear-exported" class="btn warn-btn" style="width:100%">Borrar registros ya enviados</button>
+      <button type="button" id="btn-clear-all" class="btn err-btn" style="width:100%;margin-top:8px">Vaciar toda la memoria</button>
+      <button type="button" id="btn-export-json" class="btn sec" style="width:100%;margin-top:8px">Descargar respaldo JSON</button>
+    </div>
+    <div class="inst">
+      <div class="inst-logos"><img src="data:image/png;base64,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" alt="USP"><span aria-hidden="true">+</span><img src="data:image/png;base64,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" alt="FAPESP"></div>
+      <span><b>Projeto Legado Sustentável</b><br>Escola Politécnica da USP · PMI<br>Processo FAPESP 2026/26432-4 · Colector C1 v3</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div class="main" id="app-main">
+
+  <!-- ============ TAB: REGISTRAR ============ -->
   <section id="tab-reg" class="tab-panel active">
-    <div class="card">
-      <h2>Modo de Operación</h2>
-      <div class="seg" id="mode-seg">
-        <button type="button" class="active" data-mode="MUESTRA">Muestreo Cantera (F1)</button>
-        <button type="button" data-mode="CUSTODIA">Custodia / Lab (F2-F3)</button>
-      </div>
-      <div class="row">
-        <div>
-          <label for="f-origen-reg">Origen del Registro</label>
-          <select id="f-origen-reg">
-            <option value="CAMPO_PWA">CAMPO_PWA (Directo en celular)</option>
-            <option value="CONTINGENCIA_PAPEL">CONTINGENCIA_PAPEL (Transcrito)</option>
-            <option value="LAB_WEB">LAB_WEB (Recepcion/Cuarteo)</option>
-          </select>
-        </div>
-        <div>
-          <label for="f-operador">Operador</label>
-          <input id="f-operador" type="text" placeholder="Nombre del operador (obligatorio)">
-        </div>
+
+    <!-- Selector de modo -->
+    <div style="margin-bottom:8px">
+      <div class="kick">¿Que va a registrar?</div>
+      <div class="seg" id="mode-seg" style="margin-top:8px">
+        <button type="button" id="mode-muestra-btn" class="on">Muestra nueva<span>Colecta en cantera</span></button>
+        <button type="button" id="mode-custodia-btn">Movimiento<span>Traslado, cuarteo, ensayo</span></button>
       </div>
     </div>
 
-    <div class="card">
-      <h2>A. Identificación por QR o Código Canónico</h2>
-      <div class="row3">
-        <button type="button" id="btn-scan-live" class="btn btn-dark" style="margin-top:0">Escanear QR (Cámara)</button>
-        <label class="btn btn-outline" style="margin-top:0; cursor:pointer">
-          QR Foto Directa
-          <input id="inp-qr-img" type="file" accept="image/*" capture="environment" class="hidden">
-        </label>
-        <label class="btn btn-outline" style="margin-top:0; cursor:pointer">
-          QR desde Galería
-          <input id="inp-qr-gallery" type="file" accept="image/*" class="hidden">
-        </label>
-      </div>
-      <!-- FUTURO: Boton NFC (Sprint 4+). Requiere HTTPS + Android Chrome 89+. iOS NO soportado.
-      <button type="button" id="btn-nfc-scan" class="btn btn-outline" style="margin-top:6px">
-        Leer Tag NFC
-      </button>
-      -->
-      <div id="qr-scanner-box">
-        <video id="qr-video" playsinline muted></video>
-        <canvas id="qr-canvas" class="hidden"></canvas>
-        <button type="button" id="btn-stop-scan" class="btn btn-err btn-sm" style="margin:6px">Detener Cámara</button>
-      </div>
-
-      <label for="f-codigo">Código de Muestra / Submuestra *</label>
-      <input id="f-codigo" type="text" placeholder="LS-CB-GRN-0001 o LS-CB-GRN-0001-CBR-01" style="text-transform:uppercase; font-weight:700">
-
-      <div id="preload-picker-wrap" class="hidden">
-        <label for="f-preload-sel">O elegir código PRELOAD cargado</label>
-        <select id="f-preload-sel">
-          <option value="">-- Seleccionar del lote PRELOAD --</option>
-        </select>
-      </div>
-
-      <label>Constructor Rápido de Código (sin teclado):</label>
-      <div class="row3">
-        <select id="b-loc">
-          <option value="CB">CB (Capão Bonito)</option>
-          <option value="OP">OP (Ouro Preto)</option>
-        </select>
-        <select id="b-lit">
-          <option value="GRN">GRN (Granito)</option>
-          <option value="QTZ">QTZ (Cuarcita)</option>
-          <option value="EST">EST (Esteatito)</option>
-        </select>
-        <input id="b-num" type="number" min="1" max="9999" value="1" placeholder="Nº">
-      </div>
-      <div class="row" style="margin-top:6px">
-        <select id="b-ens">
-          <option value="">(Muestra madre sin subcódigo)</option>
-          <option value="GRN">-GRN (Granulometría)</option>
-          <option value="MOR">-MOR (Morfología C2)</option>
-          <option value="LIM">-LIM (Atterberg)</option>
-          <option value="PRO">-PRO (Proctor)</option>
-          <option value="CBR">-CBR (CBR 4d)</option>
-          <option value="UCS">-UCS (Compresión)</option>
-          <option value="LA">-LA (Los Ángeles)</option>
-        </select>
-        <button type="button" id="btn-build-code" class="btn btn-outline" style="margin-top:0">Aplicar Código</button>
-      </div>
-      <div id="code-parse-info" class="record-meta"></div>
-    </div>
-
-    <!-- BLOQUE MUESTREO F1 -->
+    <!-- ===== MUESTRA NUEVA: 5 pasos ===== -->
     <div id="panel-muestra">
-      <div class="card">
-        <h2>B. Geolocalización Satelital (Offline)</h2>
-        <button type="button" id="btn-gps" class="btn btn-primary" style="margin-top:0">Capturar GPS Satelital Ahora</button>
-        <div id="gps-status" class="record-meta" style="margin-top:6px">Sin lectura GPS aún.</div>
-        <div class="row" style="margin-top:6px">
-          <div><label for="f-lat">Latitud (WGS84)</label><input id="f-lat" type="number" step="any" placeholder="-24.005..."></div>
-          <div><label for="f-lon">Longitud (WGS84)</label><input id="f-lon" type="number" step="any" placeholder="-48.348..."></div>
-        </div>
-        <div class="row">
-          <div><label for="f-alt">Altitud (m)</label><input id="f-alt" type="number" step="any"></div>
-          <div><label for="f-prec">Precisión (± m)</label><input id="f-prec" type="number" step="any"></div>
-        </div>
-      </div>
+      <ol class="steps" id="steps-ol">
 
-      <div class="card">
-        <h2>C. Procedencia y Características de Campo</h2>
-        <div class="row">
+        <!-- PASO 1: Identificacion -->
+        <li id="step-1" class="st cur" data-step="1">
+          <span class="dot">1</span>
           <div>
-            <label for="f-cantera">Cantera / Empresa</label>
-            <input id="f-cantera" type="text" list="dl-canteras" placeholder="Ej. Pedreira X">
-            <datalist id="dl-canteras">
-              <option value="Capao Bonito - Cantera A">
-              <option value="Ouro Preto - Cantera Cuarcita">
-              <option value="Ouro Preto - Artesanal Esteatito">
-            </datalist>
+            <div class="st-h"><b>Identificacion</b></div>
+            <div class="st-sum"></div>
+            <div class="panel" id="step-1-content">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+                <button type="button" id="btn-scan-live" class="btn sec btn-sm">Escanear QR</button>
+                <label class="btn sec btn-sm" style="cursor:pointer">Foto QR<input id="inp-qr-img" type="file" accept="image/*" capture="environment" class="hidden"></label>
+                <label class="btn sec btn-sm" style="cursor:pointer">Galeria<input id="inp-qr-gallery" type="file" accept="image/*" class="hidden"></label>
+              </div>
+              <div id="qr-scanner-box">
+                <video id="qr-video" playsinline muted></video>
+                <canvas id="qr-canvas" class="hidden"></canvas>
+                <button type="button" id="btn-stop-scan" class="btn sec btn-sm" style="margin:6px;width:calc(100% - 12px)">Detener camara</button>
+              </div>
+              <label for="f-codigo">Codigo de muestra</label>
+              <input id="f-codigo" type="text" placeholder="LS-CB-GRN-0001" style="font-family:var(--font-mono);text-transform:uppercase">
+              <div id="code-parse-info" style="font-size:13px;color:var(--muted);margin-top:2px"></div>
+              <div id="preload-picker-wrap" class="hidden">
+                <label for="f-preload-sel">Codigo PRELOAD</label>
+                <select id="f-preload-sel"><option value="">-- Seleccionar del lote PRELOAD --</option></select>
+              </div>
+              <p class="help">Constructor rapido:</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+                <select id="b-loc"><option value="CB">CB (Capao Bonito)</option><option value="OP">OP (Ouro Preto)</option></select>
+                <select id="b-lit"><option value="GRN">GRN (Granito)</option><option value="QTZ">QTZ (Cuarcita)</option><option value="EST">EST (Esteatita)</option></select>
+                <input id="b-num" type="number" min="1" max="9999" value="1" placeholder="N">
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+                <select id="b-ens">
+                  <option value="">(Muestra madre)</option>
+                  <option value="GRA">-GRA (Granulometria)</option>
+                  <option value="MOR">-MOR (Morfologia)</option>
+                  <option value="LIM">-LIM (Atterberg)</option>
+                  <option value="PRO">-PRO (Proctor)</option>
+                  <option value="CBR">-CBR (CBR 4d)</option>
+                  <option value="UCS">-UCS (Compresion)</option>
+                  <option value="LA">-LA (Los Angeles)</option>
+                </select>
+                <button type="button" id="btn-build-code" class="btn sec btn-sm">Aplicar codigo</button>
+              </div>
+            </div>
           </div>
+        </li>
+
+        <!-- PASO 2: GPS -->
+        <li id="step-2" class="st" data-step="2">
+          <span class="dot">2</span>
           <div>
-            <label for="f-frente">Frente / Pila / Punto</label>
-            <input id="f-frente" type="text" placeholder="Pila estéril Norte / Tajo 2">
+            <div class="st-h"><b>Ubicacion GPS</b><span class="tag">recomendado</span></div>
+            <div class="st-sum"></div>
+            <div class="panel hidden" id="step-2-content">
+              <button type="button" id="btn-gps" class="btn pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>Capturar ubicacion</button>
+              <dl class="gps hidden" id="gps-display">
+                <div><dt>Latitud</dt><dd id="gps-lat-dd">—</dd></div>
+                <div><dt>Longitud</dt><dd id="gps-lon-dd">—</dd></div>
+                <div><dt>Altitud</dt><dd id="gps-alt-dd">—</dd></div>
+                <div><dt>Precision</dt><dd id="gps-prec-dd">—</dd></div>
+                <div class="acc" id="gps-acc-bars"><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></div>
+                <div class="qual hidden" id="gps-qual-msg"></div>
+              </dl>
+              <div id="gps-status" style="font-size:13px;color:var(--muted);margin-top:6px">Sin lectura GPS aun.</div>
+              <button type="button" id="btn-gps-manual" class="btn ghost">Escribir a mano</button>
+              <div id="gps-manual-fields" class="hidden">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div><label for="f-lat">Latitud (WGS84)</label><input id="f-lat" type="number" step="any" placeholder="-24.005..."></div>
+                  <div><label for="f-lon">Longitud (WGS84)</label><input id="f-lon" type="number" step="any" placeholder="-48.348..."></div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+                  <div><label for="f-alt">Altitud (m)</label><input id="f-alt" type="number" step="any"></div>
+                  <div><label for="f-prec">Precision (m)</label><input id="f-prec" type="number" step="any"></div>
+                </div>
+              </div>
+              <p class="help">El GPS funciona sin internet. Sin senal, puede escribir las coordenadas; quedan marcadas como "manual".</p>
+            </div>
           </div>
-        </div>
+        </li>
 
-        <label>Tipo Físico del Residuo</label>
-        <div class="chip-group" id="chips-fisico">
-          <button type="button" class="chip active" data-val="Bloque/Fragmento">Bloque/Fragmento</button>
-          <button type="button" class="chip" data-val="Triturado/Grava">Triturado/Grava</button>
-          <button type="button" class="chip" data-val="Polvo/Fino">Polvo/Fino</button>
-          <button type="button" class="chip" data-val="Lodo/Corte">Lodo/Corte</button>
-        </div>
+        <!-- PASO 3: Datos de campo -->
+        <li id="step-3" class="st" data-step="3">
+          <span class="dot">3</span>
+          <div>
+            <div class="st-h"><b>Datos de campo</b><span class="tag">cantera, tipo, masa</span></div>
+            <div class="st-sum"></div>
+            <div class="panel hidden" id="step-3-content">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <div>
+                  <label for="f-cantera">Cantera / Empresa</label>
+                  <input id="f-cantera" type="text" list="dl-canteras" placeholder="Pedreira X">
+                  <datalist id="dl-canteras">
+                    <option value="Capao Bonito - Cantera A">
+                    <option value="Ouro Preto - Cantera Cuarcita">
+                    <option value="Ouro Preto - Artesanal Esteatito">
+                  </datalist>
+                </div>
+                <div>
+                  <label for="f-frente">Frente / Pila</label>
+                  <input id="f-frente" type="text" placeholder="Frente Norte">
+                </div>
+              </div>
+              <label>Tipo fisico</label>
+              <div class="chip-group" id="chips-fisico">
+                <button type="button" class="chip active" data-val="Bloque/Fragmento">Bloque</button>
+                <button type="button" class="chip" data-val="Triturado/Grava">Triturado</button>
+                <button type="button" class="chip" data-val="Polvo/Fino">Polvo/Fino</button>
+                <button type="button" class="chip" data-val="Lodo/Corte">Lodo</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+                <div><label for="f-sacos">Sacos</label><input id="f-sacos" type="number" min="1" value="1"></div>
+                <div><label for="f-masa">Masa total (kg)</label><input id="f-masa" type="number" step="0.1" min="0" placeholder="25.0"></div>
+              </div>
+              <label for="f-notas">Observaciones</label>
+              <textarea id="f-notas" maxlength="2000" placeholder="Color, humedad, alteracion, contaminacion..."></textarea>
+            </div>
+          </div>
+        </li>
 
-        <div class="row" style="margin-top:6px">
-          <div><label for="f-sacos">Nº de Sacos</label><input id="f-sacos" type="number" min="1" value="1"></div>
-          <div><label for="f-masa">Masa Total Est. (kg)</label><input id="f-masa" type="number" step="0.1" min="0" placeholder="25.0"></div>
-        </div>
+        <!-- PASO 4: Fotos -->
+        <li id="step-4" class="st" data-step="4">
+          <span class="dot">4</span>
+          <div>
+            <div class="st-h"><b>Fotos</b><span class="tag">recomendado</span></div>
+            <div class="st-sum"></div>
+            <div class="panel hidden" id="step-4-content">
+              <label class="btn sec" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Tomar o adjuntar foto
+                <input id="inp-foto" type="file" accept="image/*" capture="environment" multiple class="hidden">
+              </label>
+              <div id="foto-preview" class="photo-list"></div>
+            </div>
+          </div>
+        </li>
 
-        <label for="f-notas">Litología Macroscópica / Observaciones</label>
-        <textarea id="f-notas" maxlength="2000" placeholder="Color, humedad aparente, alteración, contaminación visible..."></textarea>
-      </div>
-
-      <div class="card">
-        <h2>D. Evidencia Fotográfica (Compresión &le;1600px + SHA-256)</h2>
-        <label class="btn btn-dark" style="margin-top:0; cursor:pointer">
-          Tomar / Adjuntar Foto
-          <input id="inp-foto" type="file" accept="image/*" capture="environment" multiple class="hidden">
-        </label>
-        <div id="foto-preview" class="photo-list"></div>
-      </div>
-
-      <button type="button" id="btn-save-muestra" class="btn btn-ok">GUARDAR MUESTRA OFFLINE</button>
+        <!-- PASO 5: Revisar y guardar -->
+        <li id="step-5" class="st" data-step="5">
+          <span class="dot">5</span>
+          <div>
+            <div class="st-h"><b>Revisar y guardar</b></div>
+            <div class="panel hidden" id="step-5-content">
+              <div id="review-list" class="rev"></div>
+              <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Al guardar, el registro y las fotos reciben una huella SHA-256. Desde ese momento cualquier cambio queda a la vista.</span></div>
+              <div id="review-missing" class="hidden" style="text-align:center;font-size:13px;color:var(--warn)"></div>
+              <button type="button" id="btn-save-muestra" class="btn ok" style="width:100%">Guardar en el telefono</button>
+            </div>
+          </div>
+        </li>
+      </ol>
     </div>
 
-    <!-- BLOQUE CUSTODIA / LAB F2-F3 -->
+    <!-- ===== MOVIMIENTO (CUSTODIA) ===== -->
     <div id="panel-custodia" class="hidden">
-      <div class="card">
-        <h2>Movimiento de Custodia / Cuarteo / Ingreso Lab</h2>
-        <label for="c-evento">Evento</label>
-        <select id="c-evento">
-          <option value="RECEPCION_USP">RECEPCION_USP (Llegada desde cantera)</option>
-          <option value="TRASLADO">TRASLADO (Movimiento entre laboratorios)</option>
-          <option value="CUARTEO">CUARTEO (Fraccionamiento / Submuestra)</option>
-          <option value="INGRESO_ENSAYO">INGRESO_ENSAYO (Inicio ensayo normado)</option>
-          <option value="ARCHIVO">ARCHIVO / DESCARTE</option>
-        </select>
-        <div class="row">
-          <div>
-            <label for="c-origen">Ubicación Origen</label>
-            <select id="c-origen">
-              <option value="CANTERA">CANTERA</option>
-              <option value="ALMACEN_PMI">ALMACEN_PMI</option>
-              <option value="LMR">LMR (Mecánica de Rocas)</option>
-              <option value="LTP">LTP (Pavimentación)</option>
-              <option value="LCT">LCT (Caracterización Tecn.)</option>
-            </select>
+      <!-- Hidden fields for save function compatibility -->
+      <input type="hidden" id="c-evento" value="RECEPCION_USP">
+      <input type="hidden" id="c-origen" value="CANTERA">
+      <input type="hidden" id="c-destino" value="ALMACEN_PMI">
+
+      <!-- Code entry -->
+      <div id="custodia-code-entry">
+        <div class="lbl" style="margin-bottom:8px">Escanear o escribir el codigo</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button type="button" id="btn-custodia-scan" class="btn sec btn-sm">Escanear QR</button>
+          <label class="btn sec btn-sm" style="cursor:pointer">Galeria<input id="inp-custodia-qr" type="file" accept="image/*" class="hidden"></label>
+        </div>
+        <label for="c-codigo" style="margin-top:8px">Codigo de muestra</label>
+        <input id="c-codigo" type="text" placeholder="LS-CB-GRN-0001" style="font-family:var(--font-mono);text-transform:uppercase">
+        <div id="c-code-info" style="font-size:13px;color:var(--muted);margin-top:4px"></div>
+      </div>
+
+      <!-- Sample card + form (shown after valid code) -->
+      <div id="custodia-form" class="hidden" style="display:grid;gap:16px">
+        <div class="who" id="custodia-who">
+          <span class="dot" style="background:var(--ink);color:var(--surface);box-shadow:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div style="min-width:0;flex:1"><span class="mono" id="c-code-display"></span><small id="c-code-detail"></small></div>
+          <a href="#" id="btn-another-qr" style="font-size:13px;font-weight:600;color:var(--primary);text-decoration:none">Otro QR</a>
+        </div>
+
+        <div id="custodia-chain-wrap" class="hidden">
+          <div class="chain-l" style="margin-bottom:6px"><span>Ciclo de la muestra</span><span id="chain-status-text"></span></div>
+          <div class="chain" id="chain-bar"></div>
+        </div>
+
+        <div>
+          <div class="lbl" style="margin-bottom:8px">¿Que paso con la muestra?</div>
+          <div class="opts" id="custodia-opts">
+            <label class="opt on" data-evt="RECEPCION_USP"><input type="radio" name="c-evt-radio" value="RECEPCION_USP" checked><i></i><b>Llego a la USP</b><span>Recepcion en el almacen PMI desde la cantera</span></label>
+            <label class="opt" data-evt="TRASLADO"><input type="radio" name="c-evt-radio" value="TRASLADO"><i></i><b>Pasa a un laboratorio</b><span>Traslado desde el almacen a LMR, LTP o LCT</span></label>
+            <label class="opt" data-evt="CUARTEO"><input type="radio" name="c-evt-radio" value="CUARTEO"><i></i><b>Se cuarteo</b><span>Se dividio en submuestras (-CBR-01, -LA-01...)</span></label>
+            <label class="opt" data-evt="INGRESO_ENSAYO"><input type="radio" name="c-evt-radio" value="INGRESO_ENSAYO"><i></i><b>Entra a ensayo</b><span>Comienza un ensayo normado</span></label>
+            <label class="opt" data-evt="ARCHIVO"><input type="radio" name="c-evt-radio" value="ARCHIVO"><i></i><b>Se archiva o descarta</b><span>Fin del ciclo de la muestra</span></label>
           </div>
-          <div>
-            <label for="c-destino">Ubicación Destino</label>
-            <select id="c-destino">
-              <option value="ALMACEN_PMI">ALMACEN_PMI</option>
-              <option value="LMR">LMR</option>
-              <option value="LTP">LTP</option>
-              <option value="LCT">LCT</option>
-              <option value="CANTERA">CANTERA</option>
+        </div>
+
+        <div>
+          <div class="lbl" style="margin-bottom:8px">Desde &rarr; hacia</div>
+          <div class="move">
+            <div class="loc auto" id="c-loc-from"><small>Desde (automatico)</small><b id="c-from-display">Cantera</b></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <div class="loc" id="c-loc-to"><small>Hacia</small><b id="c-to-display">Almacen PMI</b></div>
+          </div>
+          <div id="c-dest-picker" class="hidden" style="margin-top:8px">
+            <label>Seleccionar destino</label>
+            <select id="c-dest-select">
+              <option value="LMR">LMR (Mecanica de Rocas)</option>
+              <option value="LTP">LTP (Pavimentacion)</option>
+              <option value="LCT">LCT (Caracterizacion Tecn.)</option>
             </select>
           </div>
         </div>
-        <label for="c-obs">Observaciones (pesaje control, secado, probeta, integridad etiqueta)</label>
-        <textarea id="c-obs" maxlength="2000" placeholder="Ej. Saco íntegro, etiqueta exterior legible, humedad natural..."></textarea>
-        <button type="button" id="btn-save-custodia" class="btn btn-ok">GUARDAR EVENTO DE CUSTODIA OFFLINE</button>
+
+        <div>
+          <label for="c-obs">Observaciones</label>
+          <textarea id="c-obs" maxlength="2000" placeholder="Pesaje, estado de etiqueta, notas..."></textarea>
+        </div>
       </div>
     </div>
+
+    <!-- ===== EXITO DESPUES DE GUARDAR ===== -->
+    <div id="save-success" class="hidden">
+      <div class="success-box">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h2 id="success-title">Muestra guardada</h2>
+        <p id="success-detail"></p>
+        <div class="btns">
+          <button type="button" id="btn-another" class="btn pri" style="width:100%">Registrar otra</button>
+          <button type="button" id="btn-go-list" class="btn sec" style="width:100%">Ver guardados</button>
+        </div>
+      </div>
+    </div>
+
   </section>
 
-  <!-- TAB 2: GUARDADOS -->
+  <!-- ============ TAB: GUARDADOS ============ -->
   <section id="tab-list" class="tab-panel">
-    <div class="card">
-      <h2>Registros Locales en IndexedDB</h2>
-      <div class="row">
-        <select id="filter-status">
-          <option value="ALL">Todos</option>
-          <option value="PENDING">Solo pendientes de exportar</option>
-          <option value="EXPORTED">Ya exportados</option>
-        </select>
-        <input id="filter-q" type="text" placeholder="Buscar código LS-...">
-      </div>
+    <div class="grp-h"><div><div class="kick">En este telefono</div><h2 class="h" style="margin-bottom:8px">Guardados</h2></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <select id="filter-status">
+        <option value="ALL">Todos</option>
+        <option value="PENDING">Sin enviar</option>
+        <option value="EXPORTED">Ya enviados</option>
+      </select>
+      <input id="filter-q" type="text" placeholder="Buscar codigo LS-...">
     </div>
     <div id="list-container"></div>
   </section>
 
-  <!-- TAB 3: EXPORTAR ZIP -->
+  <!-- ============ TAB: ENVIAR ============ -->
   <section id="tab-exp" class="tab-panel">
-    <div class="card">
-      <h2>Resumen para Sincronización con PostgreSQL (USP)</h2>
-      <div id="export-summary" class="record-meta" style="font-size:0.9rem; color:var(--ink)">Cargando...</div>
-      <button type="button" id="btn-export-zip" class="btn btn-primary">DESCARGAR PAQUETE ZIP (CSV + FOTOS + MANIFEST SHA-256)</button>
-      <button type="button" id="btn-export-json" class="btn btn-outline">Descargar Respaldo Crudo JSON</button>
+    <div><div class="kick">Del campo al Sistema C1</div><h2 class="h" style="margin-bottom:12px">Enviar al laboratorio</h2></div>
+    <ol class="flow">
+      <li>
+        <span class="dot" style="background:var(--primary);color:var(--on-primary);box-shadow:none">1</span>
+        <b>Generar el paquete</b>
+        <p>Un archivo ZIP con los datos, las fotos y sus huellas SHA-256.</p>
+        <div class="kpis" id="export-kpis">
+          <div><b id="kpi-regs">0</b><span>registros</span></div>
+          <div><b id="kpi-fotos">0</b><span>fotos</span></div>
+          <div><b id="kpi-mb">0</b><span>MB</span></div>
+        </div>
+        <button type="button" id="btn-export-zip" class="btn pri" style="width:100%">Generar ZIP</button>
+      </li>
+      <li>
+        <span class="dot">2</span>
+        <b>Llevarlo al computador</b>
+        <p>Por cable, correo o nube. El archivo no se abre ni se edita.</p>
+      </li>
+      <li>
+        <span class="dot">3</span>
+        <b>Importarlo en C1</b>
+        <p>Los registros pasan a la base del laboratorio.</p>
+        <div class="path" style="margin-top:6px"><span>Campo</span> &rsaquo; <span>Importar ZIP</span></div>
+      </li>
+      <li>
+        <span class="dot">4</span>
+        <b>Confirmar en C1</b>
+        <p>Al generar el ZIP los registros pasan a "Enviado". Cuando C1 confirme la importacion, puede liberar espacio.</p>
+      </li>
+    </ol>
+    <div class="danger" id="btn-free-space" style="margin-top:12px;cursor:pointer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      <span><b>Liberar espacio</b> &middot; borrar lo ya enviado (pide confirmacion)</span>
     </div>
-
-    <div class="card">
-      <h2>Mantenimiento Seguro de Memoria</h2>
-      <p class="record-meta">Ejecuta esto solo después de haber importado el ZIP en la laptop/servidor de USP y verificado que la ingesta salió OK.</p>
-      <button type="button" id="btn-clear-exported" class="btn btn-warn">Borrar Solo Registros Ya Exportados</button>
-      <button type="button" id="btn-clear-all" class="btn btn-err">Vaciar Toda la Memoria Local</button>
+    <div class="inst">
+      <div class="inst-logos"><img src="data:image/png;base64,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" alt="USP"><span aria-hidden="true">+</span><img src="data:image/png;base64,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" alt="FAPESP"></div>
+      <span><b>Projeto Legado Sustentável</b><br>Escola Politécnica da USP · PMI<br>Processo FAPESP 2026/26432-4 · Colector C1 v3</span>
     </div>
   </section>
 
-  <!-- TAB 4: PRELOAD Y DIAGNOSTICO -->
-  <section id="tab-cfg" class="tab-panel">
-    <div class="card">
-      <h2>Cargar Catálogo PRELOAD (desde generador_etiquetas_qr.py)</h2>
-      <p class="record-meta">Carga aquí el archivo <code>*_preload.json</code> o <code>*_preload.csv</code> antes de salir a cantera para seleccionar códigos pendientes sin digitar.</p>
-      <label class="btn btn-dark" style="cursor:pointer">
-        Seleccionar *_preload.json / .csv
-        <input id="inp-preload" type="file" accept=".json,.csv" class="hidden">
-      </label>
-      <div id="preload-stats" class="record-meta" style="margin-top:6px">Sin catálogo PRELOAD cargado.</div>
-    </div>
+</div>
 
-    <div class="card">
-      <h2>Diagnóstico del Dispositivo / Navegador</h2>
-      <div id="diag-box" class="mono" style="font-size:0.8rem; white-space:pre-wrap"></div>
-      <p class="record-meta" style="margin-top:8px">
-        Nota Android/Chrome: si abres este archivo vía <code>file:///</code> y Chrome bloquea cámara o GPS por seguridad, sírvelo localmente con <code>python -m http.server 8080</code> en USP o ábrelo desde tu carpeta sincronizada en contexto seguro (localhost / HTTPS). Los hashes SHA-256, IndexedDB y exportación ZIP funcionan en todos los modos.
-      </p>
-    </div>
-  </section>
-</main>
-
-<footer class="institutional">
-  <div class="ft-logos">
-    <svg class="ft-logo" viewBox="0 0 984.76 399.31" fill="#94a3b8" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.333 0 0 -1.333 0 399.307)"><g transform="scale(.1)"><g clip-path="url(#a)"><path d="m2395.31 698.602c0-274.832-224.18-499-499-499V0c253.58 0 476.36 136.34 598.79 339.488v359.114zm199.59 0c0-274.832 224.2-499 499.08-499V0C2840.27 0 2617.56 136.34 2495.1 339.488v359.114h99.8zM4990.27 2296.18c0 274.85 224.13 498.99 499.01 498.99v199.64c-253.65 0-476.46-136.38-598.82-339.5v-359.13h99.81zm-199.68-.32h99.87v359.09c-122.39 203.15-345.24 339.5-598.91 339.5v-199.58c274.94 0 499.04-224.2 499.04-499.01zm0-1597.008c0-274.782-224.1-499.563-499.04-499.563V.27c384.84 0 698.72 313.89 698.72 698.582H4790.59zM7185.95 2295.79h199.73c0 384.79-313.87 698.6-698.75 698.6v-199.52c274.79 0 499.02-224.2 499.02-499.08zM199.609 698.852H0C0 314.16 313.824.27 698.629.27V199.898c-274.875 0-499.02 224.172-499.02 498.954zM3094.12 2994.39c-365.71 0-699.43-315.41-698.81-698.35h199.77c0 283.7 231.8 499.13 499.02 499.23-.67 95-.59 126.58.02 199.12zM4990.27 199.84V.09h1197.68V998.371h1197.73V2295.79h-199.73V1198h-998V2295.79h-199.64V199.898l-998.04-.058zm499.01 2794.97 1197.65-.42v-199.73l-1197.65.51zm-498.55-1855.17-.46-440.788h-199.68v357.998l-1167.54 1169.4 139.93 141.49 1227.75-1228.1zm-2595.42 715.39 1227.74-1228.069 139.93 141.5-1167.9 1169.369v358.21H2395.31zM0 2994.39h2395.31v-199.52H1397.27V703.102h-199.65V2794.87H199.609V698.852H0zM698.629 199.898H1896.49V.09H698.629zm2395.381 2794.442 1197.68.05v-199.73l-1197.68.61zm-.03-2794.738 1197.71-.723V.219l-1197.68.312-.03 199.071v0"/></g></g></g><defs><clipPath id="a"><path d="M0 2994.81V0h7385.68v2994.81z"/></clipPath></defs></svg>
-    <span style="color:#475569; font-size:0.65rem">+</span>
-    <span style="color:#e2e8f0; font-weight:800; font-size:0.85rem; letter-spacing:0.5px">FAPESP</span>
+<!-- ===== BARRA INFERIOR FIJA ===== -->
+<div class="foot" id="bottom-bar">
+  <div class="act" id="step-bar">
+    <div class="act-meta"><span id="step-counter">Paso 1 de 5</span><span>Lo escrito se guarda solo</span></div>
+    <div class="prog" id="step-prog"><i></i><i></i><i></i><i></i><i></i></div>
+    <button type="button" id="btn-next-step" class="btn dark" style="margin-top:4px;width:100%">Siguiente: Ubicacion GPS &rarr;</button>
   </div>
-  <strong>Projeto Legado Sustentável</strong> · Escola Politécnica da Universidade de São Paulo<br>
-  Departamento de Engenharia de Minas e Petróleo (PMI) · Processo FAPESP 2026/26432-4<br>
-  <span style="color:#64748b; font-size:0.65rem">Colector de Campo C1 v2.0 · PWA Offline-first · Dados protegidos por SHA-256</span>
-</footer>
+  <div class="act hidden" id="custodia-bar">
+    <button type="button" id="btn-save-custodia" class="btn ok" style="width:100%">Guardar movimiento</button>
+  </div>
+  <nav class="tabs" id="main-tabs">
+    <button type="button" id="tab-btn-reg" class="on" data-tab="tab-reg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Registrar</button>
+    <button type="button" id="tab-btn-list" data-tab="tab-list"><span id="badge-count" class="badge hidden">0</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="7" y1="17" x2="12" y2="17"/></svg>Guardados</button>
+    <button type="button" id="tab-btn-exp" data-tab="tab-exp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Enviar</button>
+  </nav>
+</div>
 
 <div id="toast"></div>
 
@@ -467,13 +672,13 @@
 (() => {
   "use strict";
 
-  // ------------------------------------------------------------
+  // ============================================================
   // 1. Utilidades base: Tiempo UTC, Escape CSV, Toast, Regex LS
-  // ------------------------------------------------------------
+  // ============================================================
   const nowUtcIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
   function validateGPS(lat, lon) {
-    if (lat === null && lon === null) return true; // GPS opcional
+    if (lat === null && lon === null) return true;
     const la = parseFloat(lat), lo = parseFloat(lon);
     if (isNaN(la) || isNaN(lo)) return false;
     return la >= -90 && la <= 90 && lo >= -180 && lo <= 180;
@@ -489,7 +694,6 @@
 
   function csvCell(v) {
     const s = v === null || v === undefined ? "" : String(v);
-    // Escapar formula injection para Excel/Calc (prefijos =, +, -, @, TAB, CR)
     if (/^[=+\-@\t\r]/.test(s)) return '"' + "'" + s.replace(/"/g, '""') + '"';
     if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
     return s;
@@ -505,8 +709,7 @@
 
   function parseLsCode(raw) {
     const code = (raw || "").trim().toUpperCase();
-    // Madre: LS-CB-GRN-0001 | Sub: LS-CB-GRN-0001-CBR-01 | Test: LS-TEST-GRN-0001
-    const mSub = code.match(/^(LS-(?:CB|OP|TEST)-(?:GRN|QTZ|EST)-\d{4})-(GRN|MOR|LIM|PRO|CBR|UCS|LA)-(\d{2})$/);
+    const mSub = code.match(/^(LS-(?:CB|OP|TEST)-(?:GRN|QTZ|EST)-\d{4})-(GRA|GRN|MOR|LIM|PRO|CBR|UCS|LA)-(\d{2})$/);
     if (mSub) {
       const p = mSub[1].split("-");
       return { valid: true, codigo: code, parent: mSub[1], loc: p[1], lit: p[2], num: p[3], ensayo: mSub[2], sub: mSub[3] };
@@ -518,9 +721,19 @@
     return { valid: false, codigo: code, parent: "", loc: "", lit: "", num: "", ensayo: "", sub: "" };
   }
 
-  // ------------------------------------------------------------
+  // Maps
+  const LOC_NAMES = { CB: "Capao Bonito", OP: "Ouro Preto", TEST: "Teste" };
+  const LIT_NAMES = { GRN: "Granito", QTZ: "Cuarcita", EST: "Esteatita" };
+  const UBIC_NAMES = { CANTERA: "Cantera", ALMACEN_PMI: "Almacen PMI", LMR: "LMR", LTP: "LTP", LCT: "LCT" };
+  const UBIC_DISPLAY = { CANTERA: "Cantera", ALMACEN_PMI: "Almacen PMI", LMR: "LMR · Mec. Rocas", LTP: "LTP · Pavimentacion", LCT: "LCT · Caract. Tecn." };
+  const CHAIN_STATES = ["PENDIENTE","EN_CAMPO","COLECTADA","RECIBIDA_USP","CUARTEADA","EN_ENSAYO","VALIDADA","ARCHIVADA"];
+  const CHAIN_LABELS = { PENDIENTE:"Pendiente", EN_CAMPO:"En campo", COLECTADA:"Colectada", RECIBIDA_USP:"Recibida USP", CUARTEADA:"Cuarteada", EN_ENSAYO:"En ensayo", VALIDADA:"Validada", ARCHIVADA:"Archivada" };
+  const EVT_TO_CHAIN = { COLECTADA:2, RECEPCION_USP:3, TRASLADO:3, CUARTEO:4, INGRESO_ENSAYO:5, ARCHIVO:7 };
+  const STEP_NAMES = ["", "Identificacion", "Ubicacion GPS", "Datos de campo", "Fotos", "Revisar y guardar"];
+
+  // ============================================================
   // 2. SHA-256 (WebCrypto + Fallback JS puro para file:// offline)
-  // ------------------------------------------------------------
+  // ============================================================
   function sha256PureJs(bytes) {
     const K = new Uint32Array([
       0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -545,7 +758,6 @@
     const dv = new DataView(msg.buffer);
     dv.setUint32(padLen - 8, bitLenHi, false);
     dv.setUint32(padLen - 4, bitLenLo, false);
-
     const w = new Uint32Array(64);
     const rotr = (x, n) => (x >>> n) | (x << (32 - n));
     for (let i = 0; i < padLen; i += 64) {
@@ -582,9 +794,9 @@
     return sha256PureJs(uint8);
   }
 
-  // ------------------------------------------------------------
+  // ============================================================
   // 3. Constructor PKZIP puro en JS (Store + CRC32 + UTF-8)
-  // ------------------------------------------------------------
+  // ============================================================
   const CRC_TABLE = (() => {
     const tbl = new Uint32Array(256);
     for (let n = 0; n < 256; n++) {
@@ -602,28 +814,23 @@
   }
 
   function buildZipBlob(entries) {
-    // entries: [{ name: string, data: Uint8Array }]
     const enc = new TextEncoder();
     const now = new Date();
     const dosTime = ((now.getHours() & 0x1f) << 11) | ((now.getMinutes() & 0x3f) << 5) | ((now.getSeconds() >> 1) & 0x1f);
     const dosDate = ((((Math.max(1980, now.getFullYear()) - 1980) & 0x7f) << 9) | (((now.getMonth() + 1) & 0xf) << 5) | (now.getDate() & 0x1f));
-
     const localChunks = [];
     const centralChunks = [];
     let offset = 0;
-
     for (const entry of entries) {
       const nameBytes = enc.encode(entry.name);
       const data = entry.data;
       const crc = crc32(data);
-
-      // Local file header (30 bytes + name)
       const lh = new Uint8Array(30 + nameBytes.length);
       const ldv = new DataView(lh.buffer);
       ldv.setUint32(0, 0x04034b50, true);
-      ldv.setUint16(4, 20, true);          // version needed 2.0
-      ldv.setUint16(6, 0x0800, true);      // UTF-8 filename flag
-      ldv.setUint16(8, 0, true);           // method 0 = Store
+      ldv.setUint16(4, 20, true);
+      ldv.setUint16(6, 0x0800, true);
+      ldv.setUint16(8, 0, true);
       ldv.setUint16(10, dosTime, true);
       ldv.setUint16(12, dosDate, true);
       ldv.setUint32(14, crc, true);
@@ -632,10 +839,7 @@
       ldv.setUint16(26, nameBytes.length, true);
       ldv.setUint16(28, 0, true);
       lh.set(nameBytes, 30);
-
       localChunks.push(lh, data);
-
-      // Central directory header (46 bytes + name)
       const ch = new Uint8Array(46 + nameBytes.length);
       const cdv = new DataView(ch.buffer);
       cdv.setUint32(0, 0x02014b50, true);
@@ -656,11 +860,9 @@
       cdv.setUint32(38, 0, true);
       cdv.setUint32(42, offset, true);
       ch.set(nameBytes, 46);
-
       centralChunks.push(ch);
       offset += lh.length + data.length;
     }
-
     const centralSize = centralChunks.reduce((a, b) => a + b.length, 0);
     const eocd = new Uint8Array(22);
     const edv = new DataView(eocd.buffer);
@@ -672,15 +874,14 @@
     edv.setUint32(12, centralSize, true);
     edv.setUint32(16, offset, true);
     edv.setUint16(20, 0, true);
-
     return new Blob([...localChunks, ...centralChunks, eocd], { type: "application/zip" });
   }
 
-  // ------------------------------------------------------------
+  // ============================================================
   // 4. IndexedDB Capa de Persistencia
-  // ------------------------------------------------------------
+  // ============================================================
   const DB_NAME = "LS_Colector_C1_DB";
-  const DB_VER = 2; // v2: custodia migra de autoIncrement a UUID keyPath
+  const DB_VER = 2;
   let db = null;
 
   function openDb() {
@@ -689,7 +890,6 @@
       req.onupgradeneeded = (ev) => {
         const d = ev.target.result;
         if (!d.objectStoreNames.contains("muestras")) d.createObjectStore("muestras", { keyPath: "codigo_muestra" });
-        // v2: custodia usa UUID en vez de autoIncrement para evitar colisiones entre dispositivos
         if (d.objectStoreNames.contains("custodia") && ev.oldVersion < 2) {
           d.deleteObjectStore("custodia");
         }
@@ -729,109 +929,363 @@
     req.onerror = () => rej(req.error);
   });
 
-  // ------------------------------------------------------------
-  // 5. Estado UI, QR Scanner, Fotos & GPS
-  // ------------------------------------------------------------
-  let currentPhotos = []; // [{ filename, dataUrl, bytes (Uint8Array), sha256 }]
+  // ============================================================
+  // 5. Estado UI
+  // ============================================================
+  let currentPhotos = [];
   let scanStream = null;
   let scanRaf = null;
   let physicalType = "Bloque/Fragmento";
+  let currentStep = 1;
+  let currentMode = "MUESTRA"; // MUESTRA | CUSTODIA
+  let gpsIsManual = false;
+  let custodiaCode = "";
 
+  // SVG fragments
+  const SVG_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+  const SVG_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+  // ============================================================
+  // 6. Network status
+  // ============================================================
   function updateOnlinePill() {
     const pill = document.getElementById("hdr-net");
     if (navigator.onLine) {
-      pill.textContent = "Con Red (Listo p/ sync)";
-      pill.className = "pill pill-ok";
+      pill.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.6a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 20 0"/></svg>Con red';
+      pill.className = "net on";
     } else {
-      pill.textContent = "100% OFFLINE (IndexedDB OK)";
-      pill.className = "pill pill-warn";
+      pill.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="1" y1="1" x2="23" y2="23"/><path d="M8.5 16.4a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M10.7 5.1A15 15 0 0 1 22 8.8"/></svg>Sin red';
+      pill.className = "net";
     }
   }
   window.addEventListener("online", updateOnlinePill);
   window.addEventListener("offline", updateOnlinePill);
 
-  // Tabs
-  document.querySelectorAll("nav.tabs button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
-      document.querySelectorAll("section.tab-panel").forEach(p => p.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
-      if (btn.dataset.tab === "tab-list") refreshList();
-      if (btn.dataset.tab === "tab-exp") refreshExportSummary();
-      if (btn.dataset.tab === "tab-cfg") refreshDiagnostics();
-    });
+  // ============================================================
+  // 7. Settings panel
+  // ============================================================
+  document.getElementById("gear-btn").addEventListener("click", () => {
+    document.getElementById("settings-overlay").classList.remove("hidden");
+    refreshDiagnostics();
+  });
+  document.getElementById("settings-close").addEventListener("click", () => {
+    document.getElementById("settings-overlay").classList.add("hidden");
+    // Save operator
+    const op = document.getElementById("f-operador").value.trim();
+    if (op) localStorage.setItem("ls_c1_operador", op);
   });
 
-  // Mode Switch
-  document.querySelectorAll("#mode-seg button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("#mode-seg button").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      const m = btn.dataset.mode;
-      document.getElementById("panel-muestra").classList.toggle("hidden", m !== "MUESTRA");
-      document.getElementById("panel-custodia").classList.toggle("hidden", m !== "CUSTODIA");
-    });
+  // ============================================================
+  // 8. Tab navigation (bottom 3 tabs)
+  // ============================================================
+  function switchTab(tabId) {
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll("#main-tabs button").forEach(b => b.classList.remove("on"));
+    document.getElementById(tabId).classList.add("active");
+    const btn = document.querySelector(`#main-tabs button[data-tab="${tabId}"]`);
+    if (btn) btn.classList.add("on");
+
+    // Show/hide step bar
+    const isReg = tabId === "tab-reg";
+    document.getElementById("step-bar").classList.toggle("hidden", !isReg || currentMode !== "MUESTRA" || currentStep === 5);
+    document.getElementById("custodia-bar").classList.toggle("hidden", !isReg || currentMode !== "CUSTODIA");
+
+    if (tabId === "tab-list") refreshList();
+    if (tabId === "tab-exp") refreshExportSummary();
+  }
+
+  document.querySelectorAll("#main-tabs button").forEach(btn => {
+    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });
 
-  // Chips tipo fisico
-  document.querySelectorAll("#chips-fisico .chip").forEach(ch => {
-    ch.addEventListener("click", () => {
-      document.querySelectorAll("#chips-fisico .chip").forEach(c => c.classList.remove("active"));
-      ch.classList.add("active");
-      physicalType = ch.dataset.val;
-    });
-  });
+  document.getElementById("pending-link").addEventListener("click", () => switchTab("tab-exp"));
 
-  function applyCodeInfo(codeStr) {
-    const input = document.getElementById("f-codigo");
-    input.value = (codeStr || "").trim().toUpperCase();
-    const info = parseLsCode(input.value);
-    const out = document.getElementById("code-parse-info");
-    if (!input.value) { out.textContent = ""; return; }
-    if (info.valid) {
-      out.innerHTML = `<span class="pill pill-ok">Código Válido</span> Loc: <b>${info.loc}</b> · Lit: <b>${info.lit}</b>${info.ensayo ? ` · Ensayo: <b>${info.ensayo}-${info.sub}</b>` : ""}`;
-      if (info.loc === "CB" || info.loc === "OP") document.getElementById("b-loc").value = info.loc;
-      if (info.lit) document.getElementById("b-lit").value = info.lit;
-    } else {
-      out.innerHTML = `<span class="pill pill-warn">Formato libre</span> Esperado: LS-CB-GRN-0001`;
+  // ============================================================
+  // 9. Mode switch (Muestra nueva vs Movimiento)
+  // ============================================================
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById("mode-muestra-btn").classList.toggle("on", mode === "MUESTRA");
+    document.getElementById("mode-custodia-btn").classList.toggle("on", mode === "CUSTODIA");
+    document.getElementById("panel-muestra").classList.toggle("hidden", mode !== "MUESTRA");
+    document.getElementById("panel-custodia").classList.toggle("hidden", mode !== "CUSTODIA");
+    document.getElementById("save-success").classList.add("hidden");
+
+    document.getElementById("step-bar").classList.toggle("hidden", mode !== "MUESTRA" || currentStep === 5);
+    document.getElementById("custodia-bar").classList.toggle("hidden", mode !== "CUSTODIA");
+
+    // Check operator
+    const op = document.getElementById("f-operador").value.trim();
+    if (!op) {
+      document.getElementById("settings-overlay").classList.remove("hidden");
+      toast("Escriba el nombre del operador antes de continuar.", 3000);
     }
   }
 
-  document.getElementById("f-codigo").addEventListener("input", (e) => applyCodeInfo(e.target.value));
+  document.getElementById("mode-muestra-btn").addEventListener("click", () => setMode("MUESTRA"));
+  document.getElementById("mode-custodia-btn").addEventListener("click", () => setMode("CUSTODIA"));
+
+  // ============================================================
+  // 10. Step navigation & state
+  // ============================================================
+  function getStepDone(n) {
+    switch(n) {
+      case 1: { const v = document.getElementById("f-codigo").value.trim(); return v && parseLsCode(v.toUpperCase()).valid; }
+      case 2: return !!(document.getElementById("f-lat").value && document.getElementById("f-lon").value);
+      case 3: return true;
+      case 4: return currentPhotos.length > 0;
+      case 5: return false;
+      default: return false;
+    }
+  }
+
+  function getStepSummary(n) {
+    switch(n) {
+      case 1: {
+        const code = document.getElementById("f-codigo").value.trim().toUpperCase();
+        const info = parseLsCode(code);
+        if (!info.valid) return "";
+        return `<span class="mono">${code}</span> · ${LOC_NAMES[info.loc] || info.loc} · ${LIT_NAMES[info.lit] || info.lit}`;
+      }
+      case 2: {
+        const lat = document.getElementById("f-lat").value;
+        const lon = document.getElementById("f-lon").value;
+        const prec = document.getElementById("f-prec").value;
+        if (!lat || !lon) return "";
+        const latF = Math.abs(parseFloat(lat)).toFixed(4);
+        const lonF = Math.abs(parseFloat(lon)).toFixed(4);
+        const ns = parseFloat(lat) < 0 ? "S" : "N";
+        const ew = parseFloat(lon) < 0 ? "O" : "E";
+        return `${latF}° ${ns} · ${lonF}° ${ew} · ± ${prec || "?"} m · ${gpsIsManual ? "manual" : "satelite"}`;
+      }
+      case 3: {
+        const parts = [];
+        const c = document.getElementById("f-cantera").value.trim();
+        const f = document.getElementById("f-frente").value.trim();
+        if (c) parts.push(c);
+        if (f) parts.push(f);
+        parts.push(physicalType);
+        parts.push(document.getElementById("f-sacos").value + " sacos");
+        const m = document.getElementById("f-masa").value;
+        if (m) parts.push(m + " kg");
+        return parts.join(" · ");
+      }
+      case 4: return currentPhotos.length ? `${currentPhotos.length} foto${currentPhotos.length > 1 ? "s" : ""}` : "";
+      default: return "";
+    }
+  }
+
+  function goToStep(n) {
+    currentStep = n;
+    updateStepUI();
+    saveDraft();
+  }
+
+  function updateStepUI() {
+    for (let i = 1; i <= 5; i++) {
+      const li = document.getElementById("step-" + i);
+      const dot = li.querySelector(".dot");
+      const content = document.getElementById("step-" + i + "-content");
+      const sum = li.querySelector(".st-sum");
+      const header = li.querySelector(".st-h");
+      const isCur = (i === currentStep);
+      const isDone = (i < 5 && getStepDone(i));
+
+      li.className = "st" + (isCur ? " cur" : isDone ? " done" : "");
+
+      // Dot content
+      if (isDone && !isCur) {
+        dot.innerHTML = SVG_CHECK;
+      } else {
+        dot.textContent = i;
+      }
+
+      // Panel visibility
+      if (content) content.classList.toggle("hidden", !isCur);
+
+      // Summary
+      if (sum && i < 5) {
+        const s = getStepSummary(i);
+        if (isDone && !isCur && s) {
+          sum.innerHTML = s;
+          sum.classList.remove("hidden");
+        } else {
+          sum.classList.add("hidden");
+        }
+      }
+
+      // "Cambiar" link
+      const existingLink = header.querySelector("a");
+      if (isDone && !isCur) {
+        if (!existingLink) {
+          const a = document.createElement("a");
+          a.href = "#";
+          a.textContent = "Cambiar";
+          a.addEventListener("click", (e) => { e.preventDefault(); goToStep(i); });
+          header.appendChild(a);
+        }
+        // Hide tag
+        const tag = header.querySelector(".tag");
+        if (tag) tag.classList.add("hidden");
+      } else {
+        if (existingLink) existingLink.remove();
+        const tag = header.querySelector(".tag");
+        if (tag) tag.classList.remove("hidden");
+      }
+    }
+
+    // Build review if on step 5
+    if (currentStep === 5) buildReview();
+
+    // Update bottom bar
+    const stepBar = document.getElementById("step-bar");
+    stepBar.classList.toggle("hidden", currentStep === 5 || currentMode !== "MUESTRA");
+    document.getElementById("step-counter").textContent = `Paso ${currentStep} de 5`;
+    const prog = document.getElementById("step-prog").children;
+    for (let i = 0; i < 5; i++) {
+      prog[i].className = i < currentStep - 1 ? "d" : (i === currentStep - 1 ? "c" : "");
+    }
+    const nextBtn = document.getElementById("btn-next-step");
+    if (currentStep < 5) {
+      nextBtn.textContent = `Siguiente: ${STEP_NAMES[currentStep + 1]} →`;
+    }
+  }
+
+  // Step click handlers
+  document.querySelectorAll("#steps-ol .st").forEach(li => {
+    const n = parseInt(li.dataset.step);
+    li.querySelector(".dot").addEventListener("click", () => goToStep(n));
+    li.querySelector(".st-h").addEventListener("click", () => goToStep(n));
+  });
+
+  document.getElementById("btn-next-step").addEventListener("click", () => {
+    if (currentStep < 5) goToStep(currentStep + 1);
+  });
+
+  // ============================================================
+  // 11. Draft autoguardado
+  // ============================================================
+  const DRAFT_KEY = "colector-borrador";
+
+  function saveDraft() {
+    const draft = {
+      mode: currentMode,
+      step: currentStep,
+      codigo: document.getElementById("f-codigo").value,
+      lat: document.getElementById("f-lat").value,
+      lon: document.getElementById("f-lon").value,
+      alt: document.getElementById("f-alt").value,
+      prec: document.getElementById("f-prec").value,
+      gpsManual: gpsIsManual,
+      cantera: document.getElementById("f-cantera").value,
+      frente: document.getElementById("f-frente").value,
+      fisico: physicalType,
+      sacos: document.getElementById("f-sacos").value,
+      masa: document.getElementById("f-masa").value,
+      notas: document.getElementById("f-notas").value,
+      photosCount: currentPhotos.length,
+      cCodigo: document.getElementById("c-codigo").value,
+      cEvento: document.getElementById("c-evento").value,
+      cObs: document.getElementById("c-obs").value
+    };
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(_) {}
+  }
+
+  function restoreDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (d.codigo) document.getElementById("f-codigo").value = d.codigo;
+      if (d.lat) document.getElementById("f-lat").value = d.lat;
+      if (d.lon) document.getElementById("f-lon").value = d.lon;
+      if (d.alt) document.getElementById("f-alt").value = d.alt;
+      if (d.prec) document.getElementById("f-prec").value = d.prec;
+      if (d.gpsManual) { gpsIsManual = true; document.getElementById("gps-manual-fields").classList.remove("hidden"); }
+      if (d.cantera) document.getElementById("f-cantera").value = d.cantera;
+      if (d.frente) document.getElementById("f-frente").value = d.frente;
+      if (d.fisico) {
+        physicalType = d.fisico;
+        document.querySelectorAll("#chips-fisico .chip").forEach(c => c.classList.toggle("active", c.dataset.val === d.fisico));
+      }
+      if (d.sacos) document.getElementById("f-sacos").value = d.sacos;
+      if (d.masa) document.getElementById("f-masa").value = d.masa;
+      if (d.notas) document.getElementById("f-notas").value = d.notas;
+      if (d.cCodigo) document.getElementById("c-codigo").value = d.cCodigo;
+      if (d.cObs) document.getElementById("c-obs").value = d.cObs;
+      if (d.codigo) applyCodeInfo(d.codigo, "f-codigo");
+      if (d.step && d.mode === "MUESTRA") currentStep = d.step;
+      if (d.mode === "CUSTODIA") setMode("CUSTODIA");
+    } catch(_) {}
+  }
+
+  function clearDraft() {
+    try { localStorage.removeItem(DRAFT_KEY); } catch(_) {}
+  }
+
+  // Auto-save on input changes
+  document.addEventListener("input", (e) => {
+    const id = e.target.id;
+    if (id && (id.startsWith("f-") || id.startsWith("c-") || id.startsWith("b-"))) {
+      saveDraft();
+    }
+  });
+
+  // ============================================================
+  // 12. Code/QR handling
+  // ============================================================
+  function applyCodeInfo(codeStr, targetId) {
+    targetId = targetId || "f-codigo";
+    const input = document.getElementById(targetId);
+    input.value = (codeStr || "").trim().toUpperCase();
+    const info = parseLsCode(input.value);
+
+    if (targetId === "f-codigo") {
+      const out = document.getElementById("code-parse-info");
+      if (!input.value) { out.textContent = ""; return; }
+      if (info.valid) {
+        out.innerHTML = `<span class="pill pill-ok">Valido</span> ${LOC_NAMES[info.loc] || info.loc} · ${LIT_NAMES[info.lit] || info.lit}${info.ensayo ? " · " + info.ensayo + "-" + info.sub : ""}`;
+        if (info.loc === "CB" || info.loc === "OP") document.getElementById("b-loc").value = info.loc;
+        if (info.lit) document.getElementById("b-lit").value = info.lit;
+      } else {
+        out.innerHTML = '<span class="pill pill-warn">Formato libre</span> Esperado: LS-CB-GRN-0001';
+      }
+      updateStepUI();
+    } else if (targetId === "c-codigo") {
+      const out = document.getElementById("c-code-info");
+      if (!input.value) { out.textContent = ""; return; }
+      if (info.valid) {
+        out.innerHTML = `<span class="pill pill-ok">Valido</span> ${LOC_NAMES[info.loc] || info.loc} · ${LIT_NAMES[info.lit] || info.lit}`;
+        showCustodiaForm(input.value.trim().toUpperCase(), info);
+      } else {
+        out.innerHTML = '<span class="pill pill-warn">Formato libre</span>';
+      }
+    }
+  }
+
+  document.getElementById("f-codigo").addEventListener("input", (e) => applyCodeInfo(e.target.value, "f-codigo"));
+  document.getElementById("c-codigo").addEventListener("input", (e) => {
+    const v = e.target.value.trim().toUpperCase();
+    if (v.length >= 15) applyCodeInfo(v, "c-codigo");
+  });
+
   document.getElementById("btn-build-code").addEventListener("click", () => {
     const loc = document.getElementById("b-loc").value;
     const lit = document.getElementById("b-lit").value;
     const num = String(Math.max(1, parseInt(document.getElementById("b-num").value || "1", 10))).padStart(4, "0");
     const ens = document.getElementById("b-ens").value;
     const code = ens ? `LS-${loc}-${lit}-${num}-${ens}-01` : `LS-${loc}-${lit}-${num}`;
-    applyCodeInfo(code);
+    applyCodeInfo(code, "f-codigo");
   });
 
   document.getElementById("f-preload-sel").addEventListener("change", (e) => {
-    if (e.target.value) applyCodeInfo(e.target.value);
+    if (e.target.value) applyCodeInfo(e.target.value, "f-codigo");
   });
 
-  // QR Scanner (Native BarcodeDetector)
-  // ---------------------------------------------------------------
-  // NOTA FUTURA — NFC (Web NFC API):
-  //   Web NFC (NDEFReader) solo funciona en Android Chrome 89+ con HTTPS.
-  //   iOS Safari NO soporta Web NFC (no hay timeline de Apple).
-  //   Implementacion futura:
-  //     if ("NDEFReader" in window) {
-  //       const reader = new NDEFReader();
-  //       await reader.scan();
-  //       reader.addEventListener("reading", ({ serialNumber, message }) => {
-  //         // serialNumber = UID del tag NFC
-  //         // Buscar en PRELOAD o asignar al campo nfc_uid de la muestra
-  //         applyCodeInfo(serialNumber);
-  //         toast("NFC detectado: " + serialNumber);
-  //       });
-  //     }
-  //   Permisos requeridos: "nfc" (prompt automatico en Android).
-  //   Requiere HTTPS obligatorio. Prioridad: Sprint 4+.
-  // ---------------------------------------------------------------
-  let scannerBusy = false; // Guard contra race condition
+  // QR Scanner
+  let scannerBusy = false;
+  let qrTarget = "f-codigo";
+
   function stopCamera() {
     scannerBusy = false;
     if (scanRaf) { cancelAnimationFrame(scanRaf); scanRaf = null; }
@@ -840,13 +1294,11 @@
   }
   document.getElementById("btn-stop-scan").addEventListener("click", stopCamera);
 
-  // Deteccion QR: BarcodeDetector (nativo, Android/Chrome) o jsQR (fallback iOS/Firefox)
   const hasNativeDetector = "BarcodeDetector" in window;
   const hasJsQR = typeof jsQR === "function";
 
   async function detectQrFromVideo(video) {
     if (!video.videoWidth || !video.videoHeight) return null;
-    // 1. Intenta BarcodeDetector nativo primero si existe
     if (hasNativeDetector) {
       try {
         const detector = new BarcodeDetector({ formats: ["qr_code"] });
@@ -854,7 +1306,6 @@
         if (codes && codes.length > 0 && codes[0].rawValue) return codes[0].rawValue;
       } catch (_) {}
     }
-    // 2. Fallback universal jsQR (Windows Desktop, iOS Safari, Firefox)
     if (hasJsQR) {
       const canvas = document.getElementById("qr-canvas");
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -868,14 +1319,15 @@
     return null;
   }
 
-  document.getElementById("btn-scan-live").addEventListener("click", async () => {
-    if (scannerBusy) return; // Evitar doble apertura
+  async function startScanner(target) {
+    qrTarget = target || "f-codigo";
+    if (scannerBusy) return;
     if (!hasNativeDetector && !hasJsQR) {
-      toast("QR no soportado: carga jsQR.min.js junto al HTML. Usa 'Constructor manual'.", 3800);
+      toast("QR no soportado: carga jsQR.min.js junto al HTML.", 3800);
       return;
     }
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      toast("Cámara bloqueada (file://). Abre desde http://127.0.0.1:8000/colector/", 3800);
+      toast("Camara bloqueada. Abre desde http://127.0.0.1:8000/colector/", 3800);
       return;
     }
     scannerBusy = true;
@@ -886,13 +1338,12 @@
       await video.play();
       document.getElementById("qr-scanner-box").style.display = "block";
       const tick = async () => {
-        if (!scanStream || !scannerBusy) return; // Guard doble
+        if (!scanStream || !scannerBusy) return;
         try {
           const val = await detectQrFromVideo(video);
           if (val) {
-            // Detener ANTES de procesar para evitar doble deteccion
             stopCamera();
-            applyCodeInfo(val);
+            applyCodeInfo(val, qrTarget);
             if (navigator.vibrate) navigator.vibrate(120);
             toast("QR detectado: " + val);
             return;
@@ -902,17 +1353,19 @@
       };
       scanRaf = requestAnimationFrame(tick);
     } catch (err) {
-      toast("No se pudo abrir cámara: " + err.message, 3500);
+      toast("No se pudo abrir camara: " + err.message, 3500);
       stopCamera();
     }
-  });
+  }
 
-  // Funcion compartida: detectar QR desde archivo de imagen (foto directa o galeria)
-  async function handleQrFromFile(e) {
+  document.getElementById("btn-scan-live").addEventListener("click", () => startScanner("f-codigo"));
+  document.getElementById("btn-custodia-scan").addEventListener("click", () => startScanner("c-codigo"));
+
+  async function handleQrFromFile(e, target) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
     if (!hasNativeDetector && !hasJsQR) {
-      toast("QR no soportado: carga jsQR.min.js junto al HTML. Usa 'Constructor manual'.", 3500);
+      toast("QR no soportado: carga jsQR.min.js.", 3500);
       e.target.value = "";
       return;
     }
@@ -937,38 +1390,67 @@
         if (result && result.data) val = result.data;
       }
       if (val) {
-        applyCodeInfo(val);
-        toast("QR leído: " + val);
+        applyCodeInfo(val, target);
+        toast("QR leido: " + val);
       } else {
-        toast("No se detectó un QR legible en esa imagen.", 3000);
+        toast("No se detecto un QR legible.", 3000);
       }
     } catch (err) {
       toast("Error al leer QR: " + err.message, 3000);
     }
     e.target.value = "";
   }
-  document.getElementById("inp-qr-img").addEventListener("change", handleQrFromFile);
-  document.getElementById("inp-qr-gallery").addEventListener("change", handleQrFromFile);
 
-  // GPS
+  document.getElementById("inp-qr-img").addEventListener("change", (e) => handleQrFromFile(e, "f-codigo"));
+  document.getElementById("inp-qr-gallery").addEventListener("change", (e) => handleQrFromFile(e, "f-codigo"));
+  document.getElementById("inp-custodia-qr").addEventListener("change", (e) => handleQrFromFile(e, "c-codigo"));
+
+  // ============================================================
+  // 13. GPS
+  // ============================================================
   document.getElementById("btn-gps").addEventListener("click", () => {
     const st = document.getElementById("gps-status");
-    if (!navigator.geolocation) {
-      st.textContent = "Geolocation no soportado en este navegador.";
-      return;
-    }
-    st.textContent = "Buscando señal satelital GPS (puede tardar 3-15 s en campo)...";
+    if (!navigator.geolocation) { st.textContent = "Geolocation no soportado."; return; }
+    st.textContent = "Buscando senal GPS (3-15 s)...";
     navigator.geolocation.getCurrentPosition(
       (pos) => {
+        gpsIsManual = false;
         const { latitude, longitude, altitude, accuracy } = pos.coords;
         document.getElementById("f-lat").value = latitude.toFixed(6);
         document.getElementById("f-lon").value = longitude.toFixed(6);
         document.getElementById("f-alt").value = altitude !== null ? altitude.toFixed(1) : "";
         document.getElementById("f-prec").value = accuracy !== null ? accuracy.toFixed(1) : "";
-        let cls = "pill-ok", msg = "Precisión excelente";
-        if (accuracy > 25) { cls = "pill-err"; msg = "Baja precisión (>25m) — reintentar a cielo abierto"; }
-        else if (accuracy > 10) { cls = "pill-warn"; msg = "Precisión aceptable"; }
-        st.innerHTML = `<span class="pill ${cls}">±${accuracy.toFixed(1)} m (${msg})</span> · ${nowUtcIso()}`;
+
+        // Show display
+        const gd = document.getElementById("gps-display");
+        gd.classList.remove("hidden");
+        document.getElementById("gps-lat-dd").textContent = Math.abs(latitude).toFixed(4) + "° " + (latitude < 0 ? "S" : "N");
+        document.getElementById("gps-lon-dd").textContent = Math.abs(longitude).toFixed(4) + "° " + (longitude < 0 ? "O" : "E");
+        document.getElementById("gps-alt-dd").textContent = altitude !== null ? altitude.toFixed(0) + " m" : "—";
+        document.getElementById("gps-prec-dd").textContent = "± " + accuracy.toFixed(1) + " m";
+
+        // Accuracy bars
+        const bars = document.getElementById("gps-acc-bars").children;
+        let filled = accuracy <= 10 ? 3 : accuracy <= 30 ? 2 : 1;
+        for (let i = 0; i < 4; i++) bars[i].className = i < filled ? "" : "off";
+
+        // Quality message
+        const qm = document.getElementById("gps-qual-msg");
+        qm.classList.remove("hidden");
+        if (accuracy <= 10) {
+          qm.className = "qual";
+          qm.innerHTML = SVG_CHECK + " Precision buena (10 m o menos)";
+        } else if (accuracy <= 30) {
+          qm.className = "qual warn-q";
+          qm.innerHTML = SVG_WARN + " Precision aceptable";
+        } else {
+          qm.className = "qual err-q";
+          qm.innerHTML = SVG_WARN + " Baja precision (>30 m)";
+        }
+
+        st.textContent = `Captura GPS: ${nowUtcIso()}`;
+        updateStepUI();
+        saveDraft();
       },
       (err) => {
         st.innerHTML = `<span class="pill pill-err">Error GPS (${err.code}): ${err.message}</span>`;
@@ -977,7 +1459,32 @@
     );
   });
 
-  // Photos compression <= 1600px + SHA-256
+  document.getElementById("btn-gps-manual").addEventListener("click", () => {
+    gpsIsManual = true;
+    document.getElementById("gps-manual-fields").classList.remove("hidden");
+    document.getElementById("btn-gps-manual").classList.add("hidden");
+  });
+
+  // Update step UI when manual GPS fields change
+  ["f-lat", "f-lon", "f-alt", "f-prec"].forEach(id => {
+    document.getElementById(id).addEventListener("input", () => { updateStepUI(); saveDraft(); });
+  });
+
+  // ============================================================
+  // 14. Physical type chips
+  // ============================================================
+  document.querySelectorAll("#chips-fisico .chip").forEach(ch => {
+    ch.addEventListener("click", () => {
+      document.querySelectorAll("#chips-fisico .chip").forEach(c => c.classList.remove("active"));
+      ch.classList.add("active");
+      physicalType = ch.dataset.val;
+      saveDraft();
+    });
+  });
+
+  // ============================================================
+  // 15. Photos compression <= 1600px + SHA-256
+  // ============================================================
   function compressImage(file, maxDim = 1600, quality = 0.80) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -986,21 +1493,15 @@
         URL.revokeObjectURL(url);
         let { width, height } = img;
         if (width > maxDim || height > maxDim) {
-          if (width >= height) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
+          if (width >= height) { height = Math.round((height * maxDim) / width); width = maxDim; }
+          else { width = Math.round((width * maxDim) / height); height = maxDim; }
         }
         const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = width; canvas.height = height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
         canvas.toBlob(async (blob) => {
-          if (!blob) return reject(new Error("Fallo compresión JPEG"));
+          if (!blob) return reject(new Error("Fallo compresion JPEG"));
           const ab = await blob.arrayBuffer();
           const u8 = new Uint8Array(ab);
           const hash = await sha256Hex(u8);
@@ -1009,7 +1510,7 @@
           reader.readAsDataURL(blob);
         }, "image/jpeg", quality);
       };
-      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Imagen inválida")); };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Imagen invalida")); };
       img.src = url;
     });
   }
@@ -1023,18 +1524,20 @@
       div.innerHTML = `
         <img src="${p.dataUrl}" alt="${p.filename}">
         <div><b>${p.filename}</b> (${Math.round(p.bytes.length / 1024)} KB)</div>
-        <div class="mono" title="${p.sha256}">SHA: ${p.sha256.slice(0, 14)}...</div>
-        <button type="button" class="btn btn-err btn-sm" data-rm="${idx}">Quitar</button>
+        <div class="mono" title="${p.sha256}">SHA: ${p.sha256.slice(0, 12)}...</div>
+        <button type="button" class="btn err-btn btn-sm" data-rm="${idx}" style="width:100%;margin-top:4px">Quitar</button>
       `;
       div.querySelector("button").addEventListener("click", () => {
         currentPhotos.splice(idx, 1);
         renderPhotoPreviews();
+        updateStepUI();
+        saveDraft();
       });
       box.appendChild(div);
     });
   }
 
-  const MAX_FOTOS_BYTES = 40 * 1024 * 1024; // 40 MB limite IndexedDB seguro
+  const MAX_FOTOS_BYTES = 40 * 1024 * 1024;
   document.getElementById("inp-foto").addEventListener("change", async (e) => {
     const files = Array.from(e.target.files || []);
     const code = (document.getElementById("f-codigo").value || "SIN_CODIGO").trim().toUpperCase();
@@ -1043,44 +1546,94 @@
       try {
         const res = await compressImage(f, 1600, 0.80);
         if (totalBytes + res.bytes.length > MAX_FOTOS_BYTES) {
-          toast(`Limite de fotos alcanzado (~${Math.round(MAX_FOTOS_BYTES / 1048576)} MB). No se agrego ${f.name}.`, 3500);
+          toast(`Limite de fotos (~${Math.round(MAX_FOTOS_BYTES / 1048576)} MB).`, 3500);
           break;
         }
         const seq = currentPhotos.length + 1;
         const uid = crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : String(Date.now()).slice(-8);
-        currentPhotos.push({
-          filename: `${code}_f${seq}_${uid}.jpg`,
-          dataUrl: res.dataUrl,
-          bytes: res.bytes,
-          sha256: res.sha256
-        });
+        currentPhotos.push({ filename: `${code}_f${seq}_${uid}.jpg`, dataUrl: res.dataUrl, bytes: res.bytes, sha256: res.sha256 });
         totalBytes += res.bytes.length;
-      } catch (err) {
-        toast("Error foto: " + err.message);
-      }
+      } catch (err) { toast("Error foto: " + err.message); }
     }
     renderPhotoPreviews();
+    updateStepUI();
+    saveDraft();
     e.target.value = "";
   });
 
-  // ------------------------------------------------------------
-  // 6. Guardar Muestra (F1) y Custodia (F2-F3)
-  // ------------------------------------------------------------
+  // ============================================================
+  // 16. Review step
+  // ============================================================
+  function buildReview() {
+    const box = document.getElementById("review-list");
+    const missing = [];
+    box.innerHTML = "";
+
+    for (let i = 1; i <= 4; i++) {
+      const done = getStepDone(i);
+      const sum = getStepSummary(i);
+      const isRecommended = (i === 2 || i === 4);
+      const row = document.createElement("div");
+      row.className = "rev-row";
+
+      let icon, label, detail;
+      if (done) {
+        icon = `<svg class="ok-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+        label = `<b>${STEP_NAMES[i]}</b>`;
+        detail = sum ? `<p>${sum}</p>` : "";
+      } else if (isRecommended) {
+        icon = `<svg class="wn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+        label = `<b style="color:var(--warn)">${STEP_NAMES[i]}: recomendado</b>`;
+        detail = `<p>${i === 2 ? "Capturar GPS mejora la trazabilidad." : "Se recomienda al menos una foto."}</p>`;
+      } else {
+        icon = `<svg class="wn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+        label = `<b style="color:var(--warn)">${STEP_NAMES[i]}: falta</b>`;
+        detail = "";
+        missing.push(STEP_NAMES[i]);
+      }
+
+      const editLink = `<a data-goto="${i}">Editar</a>`;
+      row.innerHTML = icon + label + editLink + detail;
+      row.querySelector("a").addEventListener("click", () => goToStep(i));
+      box.appendChild(row);
+    }
+
+    // Missing info
+    const missingEl = document.getElementById("review-missing");
+    const saveBtn = document.getElementById("btn-save-muestra");
+    if (missing.length > 0) {
+      missingEl.textContent = "Falta: " + missing.join(", ") + ". El boton se activa al completarlos.";
+      missingEl.classList.remove("hidden");
+      saveBtn.className = "btn dis";
+      saveBtn.style.width = "100%";
+      saveBtn.disabled = true;
+    } else {
+      missingEl.classList.add("hidden");
+      saveBtn.className = "btn ok";
+      saveBtn.style.width = "100%";
+      saveBtn.disabled = false;
+    }
+  }
+
+  // ============================================================
+  // 17. Guardar Muestra
+  // ============================================================
   document.getElementById("btn-save-muestra").addEventListener("click", async () => {
     const code = document.getElementById("f-codigo").value.trim().toUpperCase();
-    if (!code) { toast("Ingresa o escanea un código LS-...", 2500); return; }
+    if (!code) { toast("Ingresa o escanea un codigo LS-...", 2500); return; }
     const operadorVal = document.getElementById("f-operador").value.trim();
-    if (!operadorVal) { toast("Ingresa el nombre del operador.", 2500); return; }
+    if (!operadorVal) { toast("Escriba el operador en Ajustes.", 2500); document.getElementById("settings-overlay").classList.remove("hidden"); return; }
     localStorage.setItem("ls_c1_operador", operadorVal);
+
     const latVal = document.getElementById("f-lat").value || null;
     const lonVal = document.getElementById("f-lon").value || null;
     if (!validateGPS(latVal, lonVal)) {
-      toast("Coordenadas GPS fuera de rango valido (Lat: -90/90, Lon: -180/180).", 3500);
+      toast("Coordenadas GPS fuera de rango.", 3500);
       return;
     }
+
     const parsed = parseLsCode(code);
     const ts = nowUtcIso();
-    // Normaliza nombres de fotos con el codigo final
     const fotosClean = currentPhotos.map((p, i) => ({
       filename: `${code}_f${i + 1}.jpg`,
       dataUrl: p.dataUrl,
@@ -1103,7 +1656,7 @@
       alt_m: document.getElementById("f-alt").value ? parseFloat(document.getElementById("f-alt").value) : null,
       gps_precision_m: document.getElementById("f-prec").value ? parseFloat(document.getElementById("f-prec").value) : null,
       litologia_notas: document.getElementById("f-notas").value.trim(),
-      operador: document.getElementById("f-operador").value.trim(),
+      operador: operadorVal,
       origen_registro: document.getElementById("f-origen-reg").value,
       ts_origen_utc: ts,
       fotos: fotosClean,
@@ -1111,7 +1664,6 @@
     };
 
     await dbPut("muestras", rec);
-    // Registra tambien evento inicial COLECTADA en custodia si no es contingencia repetida
     await dbPut("custodia", {
       id: crypto.randomUUID(),
       codigo_muestra: code,
@@ -1125,48 +1677,227 @@
       exportado: false
     });
 
-    toast("Muestra guardada offline: " + code);
+    clearDraft();
     currentPhotos = [];
     renderPhotoPreviews();
-    document.getElementById("f-codigo").value = "";
-    document.getElementById("f-notas").value = "";
-    document.getElementById("code-parse-info").textContent = "";
-    // Auto-incrementar contador del constructor rapido
-    const nEl = document.getElementById("b-num");
-    nEl.value = String((parseInt(nEl.value || "1", 10) || 0) + 1);
+
+    // Show success
+    document.getElementById("panel-muestra").classList.add("hidden");
+    document.getElementById("save-success").classList.remove("hidden");
+    document.getElementById("step-bar").classList.add("hidden");
+    document.getElementById("success-title").textContent = "Muestra guardada";
+    document.getElementById("success-detail").textContent = `${code} guardada en el telefono`;
     await refreshCounters();
   });
 
+  // After-save buttons
+  document.getElementById("btn-another").addEventListener("click", () => {
+    document.getElementById("save-success").classList.add("hidden");
+    document.getElementById("panel-muestra").classList.remove("hidden");
+    // Clear form but keep operator and cantera
+    document.getElementById("f-codigo").value = "";
+    document.getElementById("code-parse-info").textContent = "";
+    document.getElementById("f-lat").value = "";
+    document.getElementById("f-lon").value = "";
+    document.getElementById("f-alt").value = "";
+    document.getElementById("f-prec").value = "";
+    document.getElementById("gps-display").classList.add("hidden");
+    document.getElementById("gps-qual-msg").classList.add("hidden");
+    document.getElementById("gps-status").textContent = "Sin lectura GPS aun.";
+    document.getElementById("gps-manual-fields").classList.add("hidden");
+    document.getElementById("btn-gps-manual").classList.remove("hidden");
+    gpsIsManual = false;
+    document.getElementById("f-notas").value = "";
+    document.getElementById("f-masa").value = "";
+    currentPhotos = [];
+    renderPhotoPreviews();
+    // Auto-increment
+    const nEl = document.getElementById("b-num");
+    nEl.value = String((parseInt(nEl.value || "1", 10) || 0) + 1);
+    currentStep = 1;
+    updateStepUI();
+  });
+
+  document.getElementById("btn-go-list").addEventListener("click", () => {
+    document.getElementById("save-success").classList.add("hidden");
+    document.getElementById("panel-muestra").classList.remove("hidden");
+    currentStep = 1;
+    updateStepUI();
+    switchTab("tab-list");
+  });
+
+  // ============================================================
+  // 18. Custodia (Movimiento)
+  // ============================================================
+  async function showCustodiaForm(code, info) {
+    custodiaCode = code;
+    document.getElementById("custodia-code-entry").classList.add("hidden");
+    document.getElementById("custodia-form").classList.remove("hidden");
+    document.getElementById("c-code-display").textContent = code;
+
+    const locName = LOC_NAMES[info.loc] || info.loc;
+    const litName = LIT_NAMES[info.lit] || info.lit;
+
+    // Try to find last custody event in local DB
+    let lastUbic = "CANTERA";
+    let chainState = null;
+    try {
+      const allCust = await dbGetAll("custodia");
+      const mine = allCust.filter(c => c.codigo_muestra === code).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+      if (mine.length > 0) {
+        lastUbic = mine[0].ubicacion_destino || "CANTERA";
+        const idx = EVT_TO_CHAIN[mine[0].evento];
+        if (idx !== undefined) chainState = idx;
+      }
+    } catch(_) {}
+
+    // Check PRELOAD for extra info
+    try {
+      const preloads = await dbGetAll("preload");
+      const pl = preloads.find(p => p.codigo_muestra === code);
+      if (pl) {
+        if (!chainState && pl.estado_custodia) {
+          const cidx = CHAIN_STATES.indexOf(pl.estado_custodia);
+          if (cidx >= 0) chainState = cidx;
+        }
+        if (lastUbic === "CANTERA" && pl.ubicacion_actual) lastUbic = pl.ubicacion_actual;
+      }
+    } catch(_) {}
+
+    document.getElementById("c-code-detail").innerHTML = `${locName} · ${litName} · hoy en <b style="color:var(--ink)">${UBIC_DISPLAY[lastUbic] || lastUbic}</b>`;
+
+    // Chain bar
+    const chainWrap = document.getElementById("custodia-chain-wrap");
+    if (chainState !== null) {
+      chainWrap.classList.remove("hidden");
+      const filled = chainState + 1;
+      document.getElementById("chain-status-text").innerHTML = `<b>${filled} de 8</b> · ${CHAIN_LABELS[CHAIN_STATES[chainState]] || ""}`;
+      const bar = document.getElementById("chain-bar");
+      bar.innerHTML = "";
+      for (let i = 0; i < 8; i++) {
+        const seg = document.createElement("i");
+        if (i < filled) seg.className = "d";
+        bar.appendChild(seg);
+      }
+    } else {
+      chainWrap.classList.add("hidden");
+    }
+
+    // Set default origin
+    document.getElementById("c-origen").value = lastUbic;
+    document.getElementById("c-from-display").textContent = UBIC_DISPLAY[lastUbic] || lastUbic;
+
+    // Trigger event change to set default dest
+    updateCustodiaDestination();
+  }
+
+  function updateCustodiaDestination() {
+    const evt = document.getElementById("c-evento").value;
+    const origen = document.getElementById("c-origen").value;
+    let dest;
+    const picker = document.getElementById("c-dest-picker");
+
+    if (evt === "RECEPCION_USP") {
+      dest = "ALMACEN_PMI";
+      picker.classList.add("hidden");
+    } else if (evt === "TRASLADO") {
+      dest = document.getElementById("c-dest-select").value || "LMR";
+      picker.classList.remove("hidden");
+    } else {
+      dest = origen;
+      picker.classList.add("hidden");
+    }
+
+    document.getElementById("c-destino").value = dest;
+    document.getElementById("c-to-display").textContent = UBIC_DISPLAY[dest] || dest;
+  }
+
+  // Event option clicks
+  document.querySelectorAll("#custodia-opts .opt").forEach(opt => {
+    opt.addEventListener("click", () => {
+      document.querySelectorAll("#custodia-opts .opt").forEach(o => o.classList.remove("on"));
+      opt.classList.add("on");
+      opt.querySelector("input").checked = true;
+      document.getElementById("c-evento").value = opt.dataset.evt;
+      updateCustodiaDestination();
+    });
+  });
+
+  document.getElementById("c-dest-select").addEventListener("change", () => {
+    const dest = document.getElementById("c-dest-select").value;
+    document.getElementById("c-destino").value = dest;
+    document.getElementById("c-to-display").textContent = UBIC_DISPLAY[dest] || dest;
+  });
+
+  document.getElementById("btn-another-qr").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("custodia-form").classList.add("hidden");
+    document.getElementById("custodia-code-entry").classList.remove("hidden");
+    document.getElementById("c-codigo").value = "";
+    document.getElementById("c-code-info").textContent = "";
+    custodiaCode = "";
+  });
+
   document.getElementById("btn-save-custodia").addEventListener("click", async () => {
-    const code = document.getElementById("f-codigo").value.trim().toUpperCase();
-    if (!code) { toast("Ingresa o escanea un código LS-...", 2500); return; }
+    const code = custodiaCode || document.getElementById("c-codigo").value.trim().toUpperCase();
+    if (!code) { toast("Ingresa o escanea un codigo LS-...", 2500); return; }
     const operadorVal = document.getElementById("f-operador").value.trim();
-    if (!operadorVal) { toast("Ingresa el nombre del operador.", 2500); return; }
+    if (!operadorVal) { toast("Escriba el operador en Ajustes.", 2500); document.getElementById("settings-overlay").classList.remove("hidden"); return; }
     localStorage.setItem("ls_c1_operador", operadorVal);
+
     const rec = {
       id: crypto.randomUUID(),
       codigo_muestra: code,
       evento: document.getElementById("c-evento").value,
       ubicacion_origen: document.getElementById("c-origen").value,
       ubicacion_destino: document.getElementById("c-destino").value,
-      operador: document.getElementById("f-operador").value.trim(),
+      operador: operadorVal,
       origen_registro: document.getElementById("f-origen-reg").value,
       ts_origen_utc: nowUtcIso(),
       observaciones: document.getElementById("c-obs").value.trim(),
       exportado: false
     };
     await dbPut("custodia", rec);
-    toast(`Custodia ${rec.evento} guardada para ${code}`);
+
+    // Show success
+    document.getElementById("panel-custodia").classList.add("hidden");
+    document.getElementById("save-success").classList.remove("hidden");
+    document.getElementById("custodia-bar").classList.add("hidden");
+    document.getElementById("success-title").textContent = "Movimiento guardado";
+    document.getElementById("success-detail").textContent = `${rec.evento} para ${code}`;
+
+    // Reset custodia form
     document.getElementById("c-obs").value = "";
+    document.getElementById("custodia-form").classList.add("hidden");
+    document.getElementById("custodia-code-entry").classList.remove("hidden");
+    document.getElementById("c-codigo").value = "";
+    custodiaCode = "";
+    clearDraft();
     await refreshCounters();
   });
 
-  // ------------------------------------------------------------
-  // 7. Lista Local, Edicion Rápida y Contadores
-  // ------------------------------------------------------------
+  // ============================================================
+  // 19. Lista Guardados
+  // ============================================================
   async function refreshCounters() {
     const [m, c] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
-    document.getElementById("cnt-total").textContent = String(m.length + c.length);
+    const pending = m.filter(x => !x.exportado).length + c.filter(x => !x.exportado).length;
+    // Badge
+    const badge = document.getElementById("badge-count");
+    if (pending > 0) {
+      badge.textContent = String(pending);
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
+    }
+    // Pending banner
+    const banner = document.getElementById("pending-banner");
+    if (pending > 0) {
+      document.getElementById("pending-count").textContent = String(pending);
+      banner.classList.remove("hidden");
+    } else {
+      banner.classList.add("hidden");
+    }
   }
 
   async function refreshList() {
@@ -1183,85 +1914,135 @@
       return true;
     };
 
-    const mFiltered = muestras.filter(matches).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
-    const cFiltered = custodias.filter(matches).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+    const mPending = muestras.filter(x => matches(x) && !x.exportado).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+    const cPending = custodias.filter(x => matches(x) && !x.exportado).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+    const mSent = muestras.filter(x => matches(x) && x.exportado).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
+    const cSent = custodias.filter(x => matches(x) && x.exportado).sort((a, b) => b.ts_origen_utc.localeCompare(a.ts_origen_utc));
 
-    if (!mFiltered.length && !cFiltered.length) {
-      box.innerHTML = '<div class="card">No hay registros guardados con ese filtro.</div>';
+    const pendingItems = [...mPending.map(m => ({...m, _type: "M"})), ...cPending.map(c => ({...c, _type: "C"}))];
+    const sentItems = [...mSent.map(m => ({...m, _type: "M"})), ...cSent.map(c => ({...c, _type: "C"}))];
+
+    if (!pendingItems.length && !sentItems.length) {
+      box.innerHTML = '<div class="card" style="text-align:center;color:var(--muted)">No hay registros con ese filtro.</div>';
       return;
     }
 
-    for (const m of mFiltered) {
-      const div = document.createElement("div");
-      div.className = "record-card";
-      const badge = m.exportado ? '<span class="pill pill-ok">Exportado</span>' : '<span class="pill pill-warn">Pendiente</span>';
-      const gpsTxt = (m.lat_wgs84 !== null && m.lon_wgs84 !== null) ? `${m.lat_wgs84}, ${m.lon_wgs84} (±${m.gps_precision_m || "?"}m)` : "Sin GPS";
-      div.innerHTML = `
-        <div class="record-head">
-          <strong>[MUESTRA] ${m.codigo_muestra}</strong> ${badge}
-        </div>
-        <div class="record-meta">
-          ${m.localidad}/${m.litologia} · ${m.cantera_empresa || "-"} · ${m.frente_cantera || "-"} · ${m.num_sacos} sacos (${m.masa_kg ?? "-"} kg)<br>
-          GPS: ${gpsTxt} · Fotos: ${(m.fotos || []).length} · ${m.origen_registro} · ${m.ts_origen_utc}
-        </div>
-        <div class="actions-inline">
-          <button class="btn btn-outline btn-sm" data-edit="${m.codigo_muestra}">Cargar en Formulario</button>
-          <button class="btn btn-err btn-sm" data-del="${m.codigo_muestra}">Eliminar</button>
-        </div>
-      `;
-      div.querySelector("[data-edit]").addEventListener("click", () => {
-        applyCodeInfo(m.codigo_muestra);
-        document.getElementById("f-cantera").value = m.cantera_empresa || "";
-        document.getElementById("f-frente").value = m.frente_cantera || "";
-        document.getElementById("f-sacos").value = m.num_sacos || 1;
-        document.getElementById("f-masa").value = m.masa_kg ?? "";
-        document.getElementById("f-lat").value = m.lat_wgs84 ?? "";
-        document.getElementById("f-lon").value = m.lon_wgs84 ?? "";
-        document.getElementById("f-alt").value = m.alt_m ?? "";
-        document.getElementById("f-prec").value = m.gps_precision_m ?? "";
-        document.getElementById("f-notas").value = m.litologia_notas || "";
-        document.getElementById("f-operador").value = m.operador || "";
-        document.getElementById("f-origen-reg").value = m.origen_registro || "CAMPO_PWA";
-        currentPhotos = (m.fotos || []).map(f => ({
-          filename: f.filename, dataUrl: f.dataUrl, bytes: new Uint8Array(f.bytes), sha256: f.sha256
-        }));
-        renderPhotoPreviews();
-        document.querySelector('nav.tabs button[data-tab="tab-reg"]').click();
-        toast("Cargado para edición: " + m.codigo_muestra);
-      });
-      div.querySelector("[data-del]").addEventListener("click", async () => {
-        if (!confirm(`¿Eliminar muestra ${m.codigo_muestra}?`)) return;
-        await dbDelete("muestras", m.codigo_muestra);
-        await refreshCounters();
-        await refreshList();
-      });
-      box.appendChild(div);
+    // Pending group
+    if (pendingItems.length > 0 || stFilter !== "EXPORTED") {
+      const gh = document.createElement("div");
+      gh.className = "grp-h";
+      gh.innerHTML = `<span class="lbl">Sin enviar · ${pendingItems.length}</span>`;
+      gh.style.marginBottom = "8px";
+      box.appendChild(gh);
     }
 
-    for (const c of cFiltered) {
-      const div = document.createElement("div");
-      div.className = "record-card";
-      const badge = c.exportado ? '<span class="pill pill-ok">Exportado</span>' : '<span class="pill pill-warn">Pendiente</span>';
-      div.innerHTML = `
-        <div class="record-head">
-          <strong>[CUSTODIA ${c.id.slice(0,8)}] ${c.codigo_muestra} · ${c.evento}</strong> ${badge}
-        </div>
-        <div class="record-meta">
-          ${c.ubicacion_origen} &rarr; ${c.ubicacion_destino} · ${c.operador} · ${c.ts_origen_utc}<br>
-          ${c.observaciones || ""}
-        </div>
-        <div class="actions-inline">
-          <button class="btn btn-err btn-sm" data-delc="${c.id}">Eliminar</button>
-        </div>
-      `;
-      div.querySelector("[data-delc]").addEventListener("click", async () => {
-        if (!confirm(`¿Eliminar evento custodia ${c.id.slice(0,8)}?`)) return;
-        await dbDelete("custodia", c.id);
-        await refreshCounters();
-        await refreshList();
-      });
-      box.appendChild(div);
+    for (const item of pendingItems) {
+      box.appendChild(buildRecordCard(item, false));
     }
+
+    // Sent group
+    if (sentItems.length > 0) {
+      const gh = document.createElement("div");
+      gh.className = "grp-h";
+      gh.style.margin = "16px 0 8px";
+      gh.innerHTML = `<span class="lbl">Ya enviados · ${sentItems.length}</span>`;
+      box.appendChild(gh);
+
+      const showAll = stFilter === "EXPORTED";
+      const toShow = showAll ? sentItems : sentItems.slice(0, 3);
+      for (const item of toShow) {
+        box.appendChild(buildRecordCard(item, true));
+      }
+      if (!showAll && sentItems.length > 3) {
+        const more = document.createElement("button");
+        more.className = "btn ghost";
+        more.textContent = `Ver todos (${sentItems.length})`;
+        more.style.width = "100%";
+        more.addEventListener("click", () => {
+          document.getElementById("filter-status").value = "EXPORTED";
+          refreshList();
+        });
+        box.appendChild(more);
+      }
+    }
+  }
+
+  function buildRecordCard(item, isSent) {
+    const div = document.createElement("div");
+    div.className = "card" + (isSent ? " sent" : "");
+    div.style.marginBottom = "8px";
+
+    const isM = item._type === "M";
+    const code = item.codigo_muestra;
+    const time = item.ts_origen_utc ? item.ts_origen_utc.slice(11, 16) : "";
+    const date = item.ts_origen_utc ? item.ts_origen_utc.slice(0, 10) : "";
+    const pillCls = isSent ? "ok-pill" : "wn";
+    const pillSvg = isSent ? SVG_CHECK : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
+    const pillText = isSent ? "Enviado" : "Sin enviar";
+
+    let subtitle, factsHtml = "";
+    if (isM) {
+      subtitle = `Muestra nueva · ${date} ${time} · ${LOC_NAMES[item.localidad] || item.localidad || ""}`;
+      const parts = [];
+      if (item.lat_wgs84 != null) parts.push(`GPS ± ${item.gps_precision_m || "?"} m`);
+      if (item.fotos && item.fotos.length) parts.push(`${item.fotos.length} fotos`);
+      if (item.masa_kg) parts.push(`${item.masa_kg} kg`);
+      factsHtml = parts.length ? `<div class="facts">${parts.map(p => `<span>${p}</span>`).join("")}</div>` : "";
+    } else {
+      const dest = UBIC_DISPLAY[item.ubicacion_destino] || item.ubicacion_destino;
+      const orig = UBIC_DISPLAY[item.ubicacion_origen] || item.ubicacion_origen;
+      subtitle = `Movimiento · ${date} ${time} · ${orig} → ${dest}`;
+    }
+
+    div.innerHTML = `
+      <div class="card-top"><div><span class="mono">${code}</span><small>${subtitle}</small></div><span class="st-pill ${pillCls}">${pillSvg}${pillText}</span></div>
+      ${factsHtml}
+      <div class="card-actions">
+        ${isM ? `<button class="btn sec btn-sm" data-edit>Cargar en formulario</button>` : ""}
+        <button class="btn err-btn btn-sm" data-del>Eliminar</button>
+      </div>
+    `;
+
+    if (isM) {
+      const editBtn = div.querySelector("[data-edit]");
+      if (editBtn) editBtn.addEventListener("click", () => loadMuestraIntoForm(item));
+    }
+
+    div.querySelector("[data-del]").addEventListener("click", async () => {
+      if (!confirm(`¿Eliminar ${isM ? "muestra" : "evento"} ${code}?`)) return;
+      if (isM) await dbDelete("muestras", code);
+      else await dbDelete("custodia", item.id);
+      await refreshCounters();
+      await refreshList();
+    });
+
+    return div;
+  }
+
+  function loadMuestraIntoForm(m) {
+    setMode("MUESTRA");
+    switchTab("tab-reg");
+    applyCodeInfo(m.codigo_muestra, "f-codigo");
+    document.getElementById("f-cantera").value = m.cantera_empresa || "";
+    document.getElementById("f-frente").value = m.frente_cantera || "";
+    document.getElementById("f-sacos").value = m.num_sacos || 1;
+    document.getElementById("f-masa").value = m.masa_kg ?? "";
+    document.getElementById("f-lat").value = m.lat_wgs84 ?? "";
+    document.getElementById("f-lon").value = m.lon_wgs84 ?? "";
+    document.getElementById("f-alt").value = m.alt_m ?? "";
+    document.getElementById("f-prec").value = m.gps_precision_m ?? "";
+    document.getElementById("f-notas").value = m.litologia_notas || "";
+    if (m.tipo_fisico) {
+      physicalType = m.tipo_fisico;
+      document.querySelectorAll("#chips-fisico .chip").forEach(c => c.classList.toggle("active", c.dataset.val === m.tipo_fisico));
+    }
+    currentPhotos = (m.fotos || []).map(f => ({
+      filename: f.filename, dataUrl: f.dataUrl, bytes: new Uint8Array(f.bytes), sha256: f.sha256
+    }));
+    renderPhotoPreviews();
+    currentStep = 1;
+    updateStepUI();
+    toast("Cargado para edicion: " + m.codigo_muestra);
   }
 
   document.getElementById("filter-status").addEventListener("change", refreshList);
@@ -1271,38 +2052,30 @@
     _filterTimer = setTimeout(refreshList, 300);
   });
 
-  // ------------------------------------------------------------
-  // 8. Exportación ZIP Estándar + Manifest SHA-256
-  // ------------------------------------------------------------
+  // ============================================================
+  // 20. Exportacion ZIP + Enviar
+  // ============================================================
   async function refreshExportSummary() {
     const [m, c] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const totalRegs = m.length + c.length;
     const totalFotos = m.reduce((s, r) => s + (r.fotos ? r.fotos.length : 0), 0);
     const totalBytes = m.reduce((s, r) => s + (r.fotos || []).reduce((k, f) => k + f.bytes.length, 0), 0);
-    document.getElementById("export-summary").innerHTML = `
-      <ul>
-        <li><b>Muestras guardadas:</b> ${m.length} (${m.filter(x => !x.exportado).length} pendientes)</li>
-        <li><b>Eventos de custodia:</b> ${c.length} (${c.filter(x => !x.exportado).length} pendientes)</li>
-        <li><b>Fotografías comprimidas (&le;1600px):</b> ${totalFotos} (~${(totalBytes / 1048576).toFixed(2)} MB)</li>
-      </ul>
-    `;
+    document.getElementById("kpi-regs").textContent = String(totalRegs);
+    document.getElementById("kpi-fotos").textContent = String(totalFotos);
+    document.getElementById("kpi-mb").textContent = (totalBytes / 1048576).toFixed(1);
   }
 
   function triggerDownload(blob, filename) {
     const a = document.createElement("a");
     const url = URL.createObjectURL(blob);
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
   }
 
   document.getElementById("btn-export-zip").addEventListener("click", async () => {
     const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
-    if (!muestras.length && !custodias.length) {
-      toast("No hay datos para exportar.");
-      return;
-    }
+    if (!muestras.length && !custodias.length) { toast("No hay datos para exportar."); return; }
 
     const enc = new TextEncoder();
     const mHeaders = [
@@ -1359,17 +2132,15 @@
     const fname = `LS_Campo_${tsStamp.slice(0,16).replace(/[:T]/g, "-")}_${rnd}.zip`;
     triggerDownload(zipBlob, fname);
 
-    // Marcar como exportados DESPUES de que el download se haya disparado
-    // Si la app crashea antes de este punto, los registros siguen como pendientes
-    // y el usuario puede re-exportar sin perder datos.
     try {
       for (const m of muestras) { m.exportado = true; await dbPut("muestras", m); }
       for (const c of custodias) { c.exportado = true; await dbPut("custodia", c); }
     } catch (dbErr) {
-      toast("ZIP descargado pero error al marcar como exportados: " + dbErr.message, 4000);
+      toast("ZIP descargado pero error al marcar: " + dbErr.message, 4000);
       return;
     }
     await refreshExportSummary();
+    await refreshCounters();
     toast("ZIP generado: " + fname);
   });
 
@@ -1380,19 +2151,35 @@
     triggerDownload(blob, `LS_Respaldo_${nowUtcIso().slice(0,10)}.json`);
   });
 
-  document.getElementById("btn-clear-exported").addEventListener("click", async () => {
-    if (!confirm("¿Eliminar del teléfono los registros que ya fueron marcados como Exportados?")) return;
+  document.getElementById("btn-free-space").addEventListener("click", async () => {
     const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const expM = muestras.filter(x => x.exportado).length;
+    const expC = custodias.filter(x => x.exportado).length;
+    if (!expM && !expC) { toast("No hay registros enviados para borrar."); return; }
+    if (!confirm(`¿Borrar ${expM + expC} registros ya marcados como enviados?`)) return;
     for (const m of muestras) if (m.exportado) await dbDelete("muestras", m.codigo_muestra);
     for (const c of custodias) if (c.exportado) await dbDelete("custodia", c.id);
     await refreshCounters();
     await refreshExportSummary();
-    toast("Registros exportados limpiados.");
+    toast("Registros enviados borrados.");
+  });
+
+  document.getElementById("btn-clear-exported").addEventListener("click", async () => {
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const expM = muestras.filter(x => x.exportado).length;
+    const expC = custodias.filter(x => x.exportado).length;
+    if (!confirm(`¿Borrar ${expM + expC} registros ya enviados?`)) return;
+    for (const m of muestras) if (m.exportado) await dbDelete("muestras", m.codigo_muestra);
+    for (const c of custodias) if (c.exportado) await dbDelete("custodia", c.id);
+    await refreshCounters();
+    toast("Registros enviados borrados.");
   });
 
   document.getElementById("btn-clear-all").addEventListener("click", async () => {
-    if (!confirm("ATENCIÓN: Se borrarán TODOS los datos y fotos guardados localmente. ¿Continuar?")) return;
-    if (!confirm("Última confirmación: ¿Ya verificaste el ZIP en tu PC?")) return;
+    const [muestras, custodias] = await Promise.all([dbGetAll("muestras"), dbGetAll("custodia")]);
+    const total = muestras.length + custodias.length;
+    if (!confirm(`ATENCION: Se borraran ${total} registros y todas las fotos. ¿Continuar?`)) return;
+    if (!confirm("Ultima confirmacion: ¿Ya verificaste el ZIP en tu PC?")) return;
     await dbClear("muestras");
     await dbClear("custodia");
     await refreshCounters();
@@ -1400,9 +2187,9 @@
     toast("Memoria local vaciada.");
   });
 
-  // ------------------------------------------------------------
-  // 9. PRELOAD + Diagnóstico
-  // ------------------------------------------------------------
+  // ============================================================
+  // 21. PRELOAD
+  // ============================================================
   async function renderPreloadDropdown() {
     const items = await dbGetAll("preload");
     const sel = document.getElementById("f-preload-sel");
@@ -1411,7 +2198,7 @@
     sel.innerHTML = '<option value="">-- Seleccionar del lote PRELOAD --</option>';
     if (!items.length) {
       wrap.classList.add("hidden");
-      stats.textContent = "Sin catálogo PRELOAD cargado.";
+      stats.textContent = "Sin catalogo PRELOAD cargado.";
       return;
     }
     wrap.classList.remove("hidden");
@@ -1421,7 +2208,7 @@
       opt.textContent = `${it.codigo_muestra} (${it.localidad}/${it.litologia})`;
       sel.appendChild(opt);
     });
-    stats.textContent = `Catálogo PRELOAD activo: ${items.length} códigos disponibles offline.`;
+    stats.textContent = `Catalogo PRELOAD activo: ${items.length} codigos disponibles offline.`;
   }
 
   document.getElementById("inp-preload").addEventListener("change", async (e) => {
@@ -1453,10 +2240,13 @@
       if (r.codigo_muestra) await dbPut("preload", r);
     }
     await renderPreloadDropdown();
-    toast(`PRELOAD cargado: ${rows.length} códigos`);
+    toast(`PRELOAD cargado: ${rows.length} codigos`);
     e.target.value = "";
   });
 
+  // ============================================================
+  // 22. Diagnostico
+  // ============================================================
   function refreshDiagnostics() {
     const swStatus = ("serviceWorker" in navigator)
       ? (navigator.serviceWorker.controller ? "ACTIVO (offline listo)" : "Registrado (recarga para activar)")
@@ -1468,32 +2258,35 @@
       `IndexedDB:       ${"indexedDB" in window}`,
       `Geolocation:     ${"geolocation" in navigator}`,
       `getUserMedia:    ${!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)}`,
-      `BarcodeDetector: ${"BarcodeDetector" in window} (nativo Android/Chrome)`,
-      `jsQR fallback:   ${typeof jsQR === "function"} (iOS Safari/Firefox)`,
-      `Web NFC:         ${"NDEFReader" in window} (futuro Sprint 4+)`,
-      `WebCrypto SHA:   ${!!(window.crypto && window.crypto.subtle)} (Fallback JS puro: SI)`
+      `BarcodeDetector: ${"BarcodeDetector" in window}`,
+      `jsQR fallback:   ${typeof jsQR === "function"}`,
+      `Web NFC:         ${"NDEFReader" in window}`,
+      `WebCrypto SHA:   ${!!(window.crypto && window.crypto.subtle)}`
     ];
     document.getElementById("diag-box").textContent = items.join("\n");
   }
 
-  // Service Worker — registro para offline real (requiere HTTP/HTTPS, no file://)
+  // ============================================================
+  // 23. Service Worker
+  // ============================================================
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
-
-  // Advertencia si se abre como file:// — GPS y camara no funcionaran
   if (location.protocol === "file:") {
-    toast("Modo file:// — GPS y camara limitados. Para full funcionalidad: python -m http.server 8080", 5000);
+    toast("Modo file:// — GPS y camara limitados. Para full: python -m http.server 8080", 5000);
   }
 
-  // Bootstrap
+  // ============================================================
+  // 24. Bootstrap
+  // ============================================================
   openDb().then(async () => {
     updateOnlinePill();
-    // Restaurar operador desde localStorage (evita hardcodeo)
-    const savedOp = localStorage.getItem("ls_c1_operador");
-    if (savedOp) document.getElementById("f-operador").value = savedOp;
+    const savedOp = localStorage.getItem("ls_c1_operador") || "";
+    document.getElementById("f-operador").value = savedOp;
+    restoreDraft();
     await refreshCounters();
     await renderPreloadDropdown();
+    updateStepUI();
     refreshDiagnostics();
   }).catch(err => {
     alert("Error inicializando IndexedDB: " + err.message);

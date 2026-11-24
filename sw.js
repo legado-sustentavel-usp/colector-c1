@@ -5,7 +5,7 @@
  * El colector es un archivo unico, asi que solo cacheamos el HTML y el manifest.
  * Cuando haya red, actualiza el cache en background (stale-while-revalidate).
  */
-const CACHE_NAME = "colector-c1-v3";
+const CACHE_NAME = "colector-c1-v5";
 const ASSETS = [
   "./colector.html",
   "./manifest.json",
